@@ -2,8 +2,8 @@
 KoLLaVA: Korean Large Language-and-Vision Assistant (feat.[LLaVA](https://github.com/haotian-liu/LLaVA/blob/main/README.md))
 
 ## To-do
-- [ ] Finetuning 데이터셋 한국어 번역
-- [ ] Pretraining 데이터셋 한국어 번역
+- [ ] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
+- [ ] Pretraining 데이터셋 한국어 번역 (LLaVA-CC3M-Pretrain-595K)
 - [ ] LLaVA 모델에서 Vicuna -> KoVicuna 대체 후 학습 (CLIP -> KoCLIP은 추후 결정)
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
  
