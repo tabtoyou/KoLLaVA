@@ -1,5 +1,5 @@
 # KoLLaVA
-KoLLaVA: Korean Large Language-and-Vision Assistant (feat.[LLaVA](https://github.com/haotian-liu/LLaVA/blob/main/README.md))
+🏔️ KoLLaVA: Korean Large Language-and-Vision Assistant (feat.[LLaVA](https://github.com/haotian-liu/LLaVA/blob/main/README.md))
 
 ## To-do
 - [ ] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
