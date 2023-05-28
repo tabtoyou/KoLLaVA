@@ -1,5 +1,4 @@
-# 🏔️ KoLLaVA
-- Korean Large Language-and-Vision Assistant (feat.LLaVA)
+# 🏔️ KoLLaVA: Korean Large Language-and-Vision Assistant
 - 이미지 기반 한국어 대화가 가능한 멀티모달 모델 ([LLaVA](https://llava-vl.github.io/)의 데이터셋, 학습 방식 활용)
 
 ## To-do
