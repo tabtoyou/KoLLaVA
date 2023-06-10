@@ -35,7 +35,7 @@ LLaVA에서 사용한 사전학습 데이터셋은 image-text pair 데이터셋�
 | CC3M Concept-balanced 595K | [chat.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/chat.json) | [ko_chat.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K/blob/main/ko_chat.json) | 211 MB / 229 MB
 <!-- | LAION/CC/SBU BLIP-Caption Concept-balanced 558K | [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/raw/main/blip_laion_cc_sbu_558k.json) | - |  [metadata.json](#) | 181 MB -->
 
-**Important notice**: Upon the request from the community, as ~15% images of the original CC-3M dataset are no longer accessible, we upload [`images.zip`](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/blob/main/images.zip) for better reproducing our work in research community. It must not be used for any other purposes. The use of these images must comply with the CC-3M license. This may be taken down at any time when requested by the original CC-3M dataset owner or owners of the referenced images.
+**주의**: LLaVA의 저자들은 사전학습에 사용한 이미지 파일도 공유했습니다. [`images.zip`](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/blob/main/images.zip) 이 이미지 파일은 연구 외에 다른 용도로 사용해서는 안 되며, 이미지의 사용은 CC3M의 라이선스를 준수해야 합니다. 원본 CC3M 데이터셋 소유자 혹은 참조된 이미지의 소유자가 요청할 경우 언제든지 해당 이미지는 삭제될 수 있습니다.
 
 
 
