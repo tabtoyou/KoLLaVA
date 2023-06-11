@@ -23,7 +23,7 @@ Finetuning에 사용하는 instruction-following 데이터셋입니다. 기존 L
 
 
 
-### Pretraining Dataset - 🤗 [KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 
+### Pretraining Dataset - 🤗 [KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 
 LLaVA에서 사용한 사전학습 데이터셋은 image-text pair 데이터셋인 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 595K개로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
 
 | Data | English Chat | Korean Chat | Size |
