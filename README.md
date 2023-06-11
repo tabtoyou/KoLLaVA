@@ -5,27 +5,21 @@
 ## To-do
 - [x] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
 - [x] Pretraining 데이터셋 한국어 번역 (LLaVA-CC3M-Pretrain-595K)
-- [ ] LLaVA 모델에서 Vicuna -> KoVicuna 대체 후 학습 (CLIP -> KoCLIP은 추후 결정)
+- [ ] LLaVA 모델에서 Vicuna -> KoVicuna-7B 대체 후 학습 (CLIP -> KoCLIP은 추후 결정)
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
+- [ ] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
  
 ## Data Download
 ### Visual Instruction Dataset
-
+Finetuning에 사용하는 instruction-following 데이터셋입니다. 기존 LLaVA에서 공개한 데이터셋을 DeepL을 이용해 번역했습니다. 
 | English | Korean |
 | --- | --- |
-| [llava_instruct_150k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/llava_instruct_150k.json) | - |
-| [llava_instruct_80k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/llava_instruct_80k.json) | - |
+| [llava_instruct_150k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/llava_instruct_150k.json) | [ko_llava_instruct_150k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_llava_instruct_150k.json) |
 | [conversation_58k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/conversation_58k.json) | [ko_conversation_58k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_conversation_58k.json) |
 | [detail_23k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/detail_23k.json) | [ko_detail_23k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_detail_23k.json) |
 | [complex_reasoning_77k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/complex_reasoning_77k.json) | [ko_complex_reasoning_77k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_complex_reasoning_77k.json) |
 
-#### \[ English ]
-To download our langauge-image multimodal instruction-folllowing dataset [`LLaVA-Instruct-150K`](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K), please run the following script:
-```bash
-sh download_data.sh
-```
-#### \[ Korean ]
-🤗 한국어 instruction-following dataset 허깅페이스 링크 : [`KoLLaVA-Instruct-150K`](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)
+* 한국어 instruction-following dataset 허깅페이스 링크 : 🤗 [`KoLLaVA-Instruct-150K`](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)
 
 ### Pretraining Dataset
 LLaVA에서 사용한 사전학습 데이터셋은 image-text pair 데이터셋인 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 595K개로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
@@ -35,8 +29,15 @@ LLaVA에서 사용한 사전학습 데이터셋은 image-text pair 데이터셋�
 | CC3M Concept-balanced 595K | [chat.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/chat.json) | [ko_chat.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K/blob/main/ko_chat.json) | 211 MB / 229 MB
 <!-- | LAION/CC/SBU BLIP-Caption Concept-balanced 558K | [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/raw/main/blip_laion_cc_sbu_558k.json) | - |  [metadata.json](#) | 181 MB -->
 
-#### \[ Image Dataset ]
-LLaVA의 저자들은 사전학습에 사용한 이미지 파일도 공유했습니다. [`images.zip`](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/blob/main/images.zip) 이 이미지 파일은 연구 외에 다른 용도로 사용해서는 안 되며, 이미지의 사용은 CC3M의 라이선스를 준수해야 합니다. 원본 CC3M 데이터셋 소유자 혹은 참조된 이미지의 소유자가 요청할 경우 언제든지 해당 이미지는 삭제될 수 있습니다.
+<details>
+<summary>Image Dataset</summary>
+<div markdown="1">
+
+[`images.zip`](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/blob/main/images.zip) - LLaVA의 저자들은 사전학습에 사용한 이미지 파일도 공유했습니다. 이 이미지 파일은 연구 외에 다른 용도로 사용해서는 안 되며, 이미지의 사용은 CC3M의 라이선스를 준수해야 합니다. 원본 CC3M 데이터셋 소유자 혹은 참조된 이미지의 소유자가 요청할 경우 언제든지 해당 이미지는 삭제될 수 있습니다.
+
+</div>
+</details>
+
 
 
 
