@@ -10,8 +10,10 @@
 - [ ] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
  
 ## Data Download
-### Visual Instruction Dataset
+### Visual Instruction Dataset - 🤗 [KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) 
 Finetuning에 사용하는 instruction-following 데이터셋입니다. 기존 LLaVA에서 공개한 데이터셋을 DeepL을 이용해 번역했습니다. 
+
+
 | English | Korean |
 | --- | --- |
 | [llava_instruct_150k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/llava_instruct_150k.json) | [ko_llava_instruct_150k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_llava_instruct_150k.json) |
@@ -19,9 +21,9 @@ Finetuning에 사용하는 instruction-following 데이터셋입니다. 기존 L
 | [detail_23k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/detail_23k.json) | [ko_detail_23k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_detail_23k.json) |
 | [complex_reasoning_77k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/complex_reasoning_77k.json) | [ko_complex_reasoning_77k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_complex_reasoning_77k.json) |
 
-* 한국어 instruction-following dataset 허깅페이스 링크 : 🤗 [`KoLLaVA-Instruct-150K`](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)
 
-### Pretraining Dataset
+
+### Pretraining Dataset - 🤗 [KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 
 LLaVA에서 사용한 사전학습 데이터셋은 image-text pair 데이터셋인 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 595K개로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
 
 | Data | English Chat | Korean Chat | Size |
@@ -92,7 +94,6 @@ If you already have CC-3M dataset on your disk, the image names follow this form
 | CC-3M Concept-balanced 595K | [chat.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/chat.json) | [metadata.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/metadata.json) | 211 MB
 | LAION/CC/SBU BLIP-Caption Concept-balanced 558K | [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/raw/main/blip_laion_cc_sbu_558k.json) | [metadata.json](#) | 181 MB
 
-**주의**: LLaVA의 저자들은 학습에 사용한 이미지 파일도 공유했습니다. [`images.zip`](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/blob/main/images.zip) 하지만 이는 연구 외에 다른 용도로 사용해서는 안 되며, 이미지의 사용은 CC-3M의 라이선스를 준수해야 합니다. 원본 CC-3M 데이터 세트 소유자 또는 참조된 이미지의 소유자가 요청할 경우 언제든지 해당 이미지는 삭제될 수 있습니다.
 
 ### GPT-4 Prompts
 
