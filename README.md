@@ -8,7 +8,8 @@
 </p>
 
 ## Visual Instruction Dataset 
-🤗 [**KoLLaVA-Instruct-150K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) : LLaVA에서 공개한 instruction-following 데이터셋을 DeepL로 번역
+🤗 [**KoLLaVA-Instruct-150K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) 
+* LLaVA에서 공개한 instruction-following 데이터셋을 DeepL로 번역
 
 
 | English | Korean |
@@ -22,7 +23,7 @@
 <summary>Details</summary>
 <div markdown="1">
  
-&nbsp;&nbsp;&nbsp;&nbsp; Finetuning에 사용하는 instruction-following 데이터는 GPT-4로 생성된 데이터입니다. 이때 GPT-4의 인풋으로는 텍스트만 넣어줍니다(이미지 X). 구체적으로는 image-text pair 데이터셋인 COCO의 텍스트 정보(caption, bounding box)만을 이용해 instruction-following 형식의 데이터를 생성한 것입니다. 이러한 데이터 생성 파이프라인이 궁금하신 분은 [블로그](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)를 참고해주세요. 
+&nbsp;&nbsp;&nbsp;&nbsp; Visual instruction tuning에 사용하는 instruction-following 데이터는 GPT-4로 생성된 데이터입니다. 이때 GPT-4의 인풋으로는 텍스트만 넣어줍니다(이미지 X). 구체적으로는 image-text pair 데이터셋인 COCO의 텍스트 정보(caption, bounding box)만을 이용해 instruction-following 형식의 데이터를 생성한 것입니다. 이러한 데이터 생성 파이프라인이 궁금하신 분은 [블로그](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)를 참고해주세요. 
 
 </div>
 </details>
@@ -42,7 +43,8 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 </details>
 
 ## Pretraining Dataset 
-🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) : LLaVA에서 공개한 Pretrain 데이터셋의 index에 맞춰 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions)에서 한국어 caption 추출
+🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 
+* LLaVA에서 공개한 Pretrain 데이터셋의 index에 맞춰 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions)에서 한국어 caption 추출
 
 
 
