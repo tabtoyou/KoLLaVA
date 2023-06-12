@@ -5,13 +5,23 @@
 ## To-do
 - [x] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
 - [x] Pretraining 데이터셋 한국어 번역 (LLaVA-CC3M-Pretrain-595K)
-- [ ] LLaVA 모델에서 Vicuna -> KoVicuna-7B 대체 후 학습 (CLIP -> KoCLIP은 추후 결정)
-- [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
+- [x] LLaVA 모델에서 Vicuna -> KoVicuna-7B 대체 후 학습
 - [ ] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
+- [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
  
 ## Data Download
-### Visual Instruction Dataset - 🤗 [KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) 
-Finetuning에 사용하는 instruction-following 데이터셋입니다. 기존 LLaVA에서 공개한 데이터셋을 DeepL을 이용해 번역했습니다. 
+### Visual Instruction Dataset 
+🤗[**KoLLaVA-Instruct-150K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) : LLaVA에서 공개한 instruction-following 데이터셋을 DeepL로 번역
+
+<details>
+<summary>Details</summary>
+<div markdown="1">
+ 
+* Finetuning에 사용하는 instruction-following 데이터는 GPT-4로 생성된 데이터입니다. 이때 GPT-4의 인풋으로는 텍스트만 넣어줍니다(이미지 X). 구체적으로는 image-text pair 데이터셋인 COCO의 텍스트 정보(caption, bounding box)만을 이용해 instruction-following 형식의 데이터를 생성한 것입니다. 이러한 데이터 생성 파이프라인이 궁금하신 분은 [블로그](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)를 참고해주세요. 
+
+</div>
+</details>
+
 
 
 | English | Korean |
@@ -21,10 +31,30 @@ Finetuning에 사용하는 instruction-following 데이터셋입니다. 기존 L
 | [detail_23k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/detail_23k.json) | [ko_detail_23k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_detail_23k.json) |
 | [complex_reasoning_77k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/complex_reasoning_77k.json) | [ko_complex_reasoning_77k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_complex_reasoning_77k.json) |
 
+<details>
+<summary>Image Dataset</summary>
+<div markdown="1">
 
+ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://cocodataset.org/#home) 입니다. 
+ ```bash
+ wget http://images.cocodataset.org/zips/train2014.zip
+ ```
+ 
+</div>
+</details>
 
-### Pretraining Dataset - 🤗 [KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 
-LLaVA에서 사용한 사전학습 데이터셋은 image-text pair 데이터셋인 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 595K개로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
+### Pretraining Dataset 
+🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) : 기존 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions)에서 이미지 index에 맞춰 추출
+
+<details>
+<summary>Details</summary>
+<div markdown="1">
+
+사전학습 데이터셋은 image-text pair 데이터셋인 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 595K개로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
+ 
+</div>
+</details>
+
 
 | Data | English Chat | Korean Chat | Size |
 | --- |  --- | --- | ---: |
@@ -39,7 +69,6 @@ LLaVA에서 사용한 사전학습 데이터셋은 image-text pair 데이터셋�
 
 </div>
 </details>
-
 
 
 
