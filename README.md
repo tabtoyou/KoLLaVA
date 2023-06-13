@@ -42,7 +42,7 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 </details>
 
 ## Pretraining Dataset 
-🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) : LLaVA Pretrain 데이터셋의 index에 맞춰 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions)에서 한국어 caption 추출
+🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) : LLaVA Pretrain 데이터셋의 index에 맞춰 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions) 한국어 caption 추출
 
 
 
