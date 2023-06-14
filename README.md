@@ -9,8 +9,10 @@
 
 ## Release
 - 23.06.12 
-    - 💥 KoLLaVA 데이터셋으로 학습한 멀티모달 언어모델 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
-    - 💥 Colab 이용한 inference test 예시 [코드](https://colab.research.google.com/drive/1CIXf6DPgJZ5IJ_uAV3rfsf1Eli1Ar2dd#scrollTo=mdxN9azWcEpy) 
+    - 💥 KoLLaVA 데이터셋으로 학습한 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
+    - 💥 Colab Pro 이용한 KoLLaVA-KoVicuna-7B 모델 inference 예시  <a style='display:inline' target="_blank" href="https://colab.research.google.com/github/tabtoyou/KoLLaVA/blob/main/KoLLaVA-Kovicuna-7b_inference_test.ipynb">
+          <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+        </a>
 - 23.06.09 
     - 💥 LLaVA의 학습 데이터셋을 한국어로 번역한 🤗[KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) / 🤗[KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 데이터셋 공개
 
@@ -76,10 +78,169 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 </div>
 </details>
 
+## Install
+1. KoLLaVA 레포 clone 후 해당 디렉토리로 이동
+```bash
+ git clone https://github.com/tabtoyou/KoLLaVA.git
+ ```
+2. Package 설치
+```bash
+ conda create -n llava python=3.10 -y
+ conda activate llava
+ pip install --upgrade pip 
+ pip install -e .
+ ```
+3. 학습 진행할 경우 추가 Package 설치
+```bash
+pip install ninja
+pip install flash-attn==1.0.2
+```
+
+## Inference
+현재는 single-turn 대화만 가능합니다. 실행할 때마다 결과는 달라지며, 7B 모델의 결과는 아직 부족함이 있습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다.
+```Shell
+python -m llava.eval.run_llava \
+    --model-name tabtoyou/KoLLaVA-KoVicuna-7b \
+    --image-file /path/to/image \
+    --query "이 이미지에 대해 자세히 설명하세요."
+```
+
+#### 결과 예시
+이미지 :
+
+<a href="https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning"><img src="images/food.png" width="30%"></a>
+
+
+질문 :
+> 이미지 속 재료들로 어떤 음식을 만들 수 있을까요?
+
+답변 :
+
+case1)
+
+>  이미지에는 냉장고 안에 다양한 식품이 들어 있습니다. 냉장고에는 과일, 채소, 우유, 버터, 달걀, 빵, 콩, 크래커, 병 음료 등이 들어 있습니다. 이러한 재료를 사용하여 다양한 요리를 만들 수 있습니다. 예를 들어 과일과 채소를 섞어 신선한 과일 샐러드를 만들거나 베리류와 콩을 섞어 맛있는 베리 콩 볶음을 만들 수 있습니다. 우유와 버터는 요거트, 크림 또는 치즈 볼을 만드는 데 사용할 수 있습니다. 달걀은 달걀 프라이나 달걀 프라이 오믈렛과 같은 달걀 기반 요리를 만들 수 있습니다. 빵은 피자 베이스나 파스타 소스를 만드는 데 사용할 수 있습니다. 병 음료는 칵테일이나 스무디를 만들 수 있습니다. 이러한 재료를 사용하여 다양한 요리를 만들 수 있는 창의력과 가능성은 무궁무진합니다.
+
+case2)
+
+>  이미지에는 다양한 식품이 있는 냉장고가 있습니다. 냉장고에는 과일, 빵, 우유, 물, 주스, 달걀, 치즈, 버터, 베리류, 블루베리, 딸기, 당근 등 다양한 식품이 들어 있습니다. 이러한 재료를 사용하여 다양한 요리를 만들 수 있습니다. 몇 가지 가능한 옵션은 다음과 같습니다:
+>
+>1. 과일 샐러드: 베리류, 딸기, 당근을 섞어 신선하고 건강한 샐러드를 만들 수 있습니다.
+>2. 과일 베이스 스무디: 베리류, 딸기, 당근을 섞어 상큼한 스무디를 만들어 보세요.
+>3. 과일 샌드위치: 베리류, 딸기, 당근을 샌드위치 빵에 얹어 맛있는 샌드위치를 만들어 보세요.
+>4. 과일 디저트: 베리류, 딸기, 당근을 섞어 과일 코블러나 팬케이크와 같은 달콤한 디저트를 만들어 보세요.
+>5. 과일 기반 요리: 베리류, 딸기, 당근을 샐러드나 수프에 넣어 맛있는 요리를 만들어 보세요.
+>
+>이는 몇 가지 예에 불과하며, 냉장고에 있는 다양한 식품을 사용하여 다양한 요리를 만들 수 있는 가능성은 무궁무진합니다.
+
+## Training
+클라우드 GPU 대여 서비스인 vast.ai를 이용해 학습을 진행했습니다. 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
+
+### Pretrain
+* KoLLaVA/scripts/pretrain_lightning.sh
+```Shell
+#!/bin/bash
+
+WEIGHT_VERSION=$1
+
+# Pretraining (5~6 hours on 4 A100/80GB GPU)
+torchrun --nnodes=1 --nproc_per_node=4 --master_port=25001 \
+   llava/train/train_mem.py \
+   --model_name_or_path junelee/ko_vicuna_7b \
+   --version $WEIGHT_VERSION \
+   --data_path /path/to/ko_chat.json \
+   --image_folder /path/to/CC3M_images \
+   --vision_tower openai/clip-vit-large-patch14 \
+   --tune_mm_mlp_adapter True \
+   --mm_vision_select_layer -2 \
+   --mm_use_im_start_end \
+   --bf16 True \
+   --output_dir ./checkpoints/kollava-lightning-7b-pretrain \
+   --num_train_epochs 1 \
+   --per_device_train_batch_size 32 \
+   --per_device_eval_batch_size 4 \
+   --gradient_accumulation_steps 1 \
+   --evaluation_strategy "no" \
+   --save_strategy "steps" \
+   --save_steps 2400 \
+   --save_total_limit 1 \
+   --learning_rate 2e-3 \
+   --weight_decay 0. \
+   --warmup_ratio 0.03 \
+   --lr_scheduler_type "cosine" \
+   --logging_steps 1 \
+   --tf32 True \
+   --model_max_length 2048 \
+   --gradient_checkpointing True \
+   --dataloader_num_workers 4 \
+   --lazy_preprocess True \
+   --report_to wandb
+
+# Extract projector features
+python scripts/extract_mm_projector.py \
+ --model_name_or_path ./checkpoints/kollava-lightning-7b-pretrain \
+ --output ./checkpoints/mm_projector/kollava-lightning-7b-pretrain.bin
+```
+
+* 학습 실행
+```shell
+sh scripts/pretrain_lightning.sh v0
+```
+
+
+### Visual instruction tuning (Finetune)
+* KoLLaVA/scripts/finetune_lightning.sh
+```shell
+#!/bin/bash
+
+WEIGHT_VERSION=$1
+
+# Visual instruction tuning (6~7 hour on 4 A100/80GB GPU)
+torchrun --nnodes=1 --nproc_per_node=4 --master_port=25001 \
+    llava/train/train_mem.py \
+    --model_name_or_path junelee/ko_vicuna_7b \
+    --version $WEIGHT_VERSION \
+    --data_path /path/to/ko_llava_instruct_150k.json \
+    --image_folder /path/to/coco/train2014 \
+    --vision_tower openai/clip-vit-large-patch14 \
+    --pretrain_mm_mlp_adapter ./checkpoints/mm_projector/kollava-lightning-7b-pretrain.bin \
+    --mm_vision_select_layer -2 \
+    --mm_use_im_start_end True \
+    --bf16 True \
+    --output_dir ./checkpoints/kollava-lightning-7b-finetune \
+    --num_train_epochs 1 \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 4 \
+    --gradient_accumulation_steps 1 \
+    --evaluation_strategy "no" \
+    --save_strategy "steps" \
+    --save_steps 1500 \
+    --save_total_limit 1 \
+    --learning_rate 2e-5 \
+    --weight_decay 0. \
+    --warmup_ratio 0.03 \
+    --lr_scheduler_type "cosine" \
+    --logging_steps 1 \
+    --tf32 True \
+    --fsdp "full_shard auto_wrap" \
+    --fsdp_transformer_layer_cls_to_wrap 'LlamaDecoderLayer' \
+    --model_max_length 2048 \
+    --gradient_checkpointing True \
+    --dataloader_num_workers 4 \
+    --lazy_preprocess True \
+    --report_to wandb
+```
+
+* 학습 실행
+```shell
+sh scripts/finetune_lightning.sh v0
+```
+
+
 ## To-do
 - [x] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
 - [x] Pretraining 데이터셋 한국어 번역 (LLaVA-CC3M-Pretrain-595K)
 - [x] LLaVA 모델에서 Vicuna -> KoVicuna-7B 대체 후 학습
+- [ ] 13B 모델 학습 및 
 - [ ] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
 
