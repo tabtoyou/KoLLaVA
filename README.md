@@ -8,8 +8,10 @@
 </p>
 
 ## Release
-* \[6/12] KoLLaVA 데이터셋으로 학습한 멀티모달 언어모델 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
-* \[6/9] LLaVA의 학습 데이터셋을 한국어로 번역한 🤗[KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) / 🤗[KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 데이터셋 공개
+- 23.06.12 
+    - 💥 KoLLaVA 데이터셋으로 학습한 멀티모달 언어모델 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
+- 23.06.09 
+    - 💥 LLaVA의 학습 데이터셋을 한국어로 번역한 🤗[KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) / 🤗[KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 데이터셋 공개
 
 ## Visual Instruction Dataset 
 🤗 [**KoLLaVA-Instruct-150K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) : LLaVA의 instruction-following 데이터셋을 DeepL로 번역
