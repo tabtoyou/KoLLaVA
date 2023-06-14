@@ -9,7 +9,7 @@
 
 ## Update logs
 - 23.06.12 
-    - 💥 KoLLaVA 데이터셋으로 학습한 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
+    - 💥 한국어 Visual Instruction 데이터셋으로 학습한 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
     - 💥 Colab Pro 이용한 KoLLaVA-KoVicuna-7B 모델 inference 예시  <a style='display:inline' target="_blank" href="https://colab.research.google.com/github/tabtoyou/KoLLaVA/blob/main/KoLLaVA-Kovicuna-7b_inference_test.ipynb">
           <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
         </a>
@@ -79,7 +79,7 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 </details>
 
 ## Install
-1. KoLLaVA 레포 clone 후 해당 디렉토리로 이동
+1. Clone 후 해당 디렉토리로 이동
 ```bash
  git clone https://github.com/tabtoyou/KoLLaVA.git
  ```
@@ -93,7 +93,7 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 3. 학습 진행할 경우 추가 Package 설치
 ```bash
 pip install ninja
-pip install flash-attn==1.0.2
+pip install flash-attn==1.0.2 
 ```
 
 ## Inference
@@ -136,7 +136,7 @@ case2)
 클라우드 GPU 대여 서비스인 vast.ai를 이용해 학습을 진행했습니다. 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
 
 ### Pretrain
-* KoLLaVA/scripts/pretrain_lightning.sh
+`./scripts/pretrain_lightning.sh`
 ```Shell
 #!/bin/bash
 
@@ -181,14 +181,14 @@ python scripts/extract_mm_projector.py \
  --output ./checkpoints/mm_projector/kollava-lightning-7b-pretrain.bin
 ```
 
-* 학습 실행
+Run
 ```shell
 sh scripts/pretrain_lightning.sh v0
 ```
 
 
 ### Visual instruction tuning (Finetune)
-* KoLLaVA/scripts/finetune_lightning.sh
+`./scripts/finetune_lightning.sh`
 ```shell
 #!/bin/bash
 
@@ -230,17 +230,18 @@ torchrun --nnodes=1 --nproc_per_node=4 --master_port=25001 \
     --report_to wandb
 ```
 
-* 학습 실행
+Run
 ```shell
 sh scripts/finetune_lightning.sh v0
 ```
 
+  
 
 ## To-do
 - [x] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
 - [x] Pretraining 데이터셋 한국어 번역 (LLaVA-CC3M-Pretrain-595K)
 - [x] LLaVA 모델에서 Vicuna -> KoVicuna-7B 대체 후 학습
-- [ ] 13B 모델 학습 및 
+- [ ] KoLLaVA-13B 모델 학습 및 허깅페이스 공개
 - [ ] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
 
