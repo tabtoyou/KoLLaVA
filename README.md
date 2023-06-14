@@ -59,7 +59,7 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 
 
 
-| Data | English Chat | Korean Chat | Size |
+| Data | English | Korean | Size |
 | --- |  --- | --- | ---: |
 | CC3M Concept-balanced 595K | [chat.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/chat.json) | [ko_chat.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K/blob/main/ko_chat.json) | 211 MB / 229 MB
 <!-- | LAION/CC/SBU BLIP-Caption Concept-balanced 558K | [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/raw/main/blip_laion_cc_sbu_558k.json) | - |  [metadata.json](#) | 181 MB -->
