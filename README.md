@@ -101,7 +101,7 @@ pip install flash-attn==1.0.2
 ```
 
 ## Inference
-현재는 single-turn 대화만 가능합니다. 실행할 때마다 결과는 달라지며, 7B 모델의 결과는 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다.
+현재는 single-turn 대화만 가능합니다. 동일한 입력으로 다양한 출력이 가능합니다. 현재 7B 모델의 결과는 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다.
 ```Shell
 python -m llava.eval.run_llava \
     --model-name tabtoyou/KoLLaVA-KoVicuna-7b \
