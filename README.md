@@ -10,6 +10,7 @@
 ## Release
 - 23.06.12 
     - 💥 KoLLaVA 데이터셋으로 학습한 멀티모달 언어모델 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
+    - 💥 Colab 이용한 inference test 예시 [코드](https://colab.research.google.com/drive/1CIXf6DPgJZ5IJ_uAV3rfsf1Eli1Ar2dd#scrollTo=mdxN9azWcEpy) 
 - 23.06.09 
     - 💥 LLaVA의 학습 데이터셋을 한국어로 번역한 🤗[KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) / 🤗[KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 데이터셋 공개
 
