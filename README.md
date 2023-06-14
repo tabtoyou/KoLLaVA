@@ -1,6 +1,6 @@
 # 🏔️ KoLLaVA
 - Korean Large Language and Vision Assistant (feat. [LLaVA](https://llava-vl.github.io/))
-- 이미지 기반 한국어 대화가 가능한 멀티모달 모델
+- 이미지 기반 한국어 대화 가능한 멀티모달 모델
  
 <p align="center">
     <a href="https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning"><img src="images/KoLLaVA-Logo.png" width="35%"></a> 
