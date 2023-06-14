@@ -136,7 +136,7 @@ case2)
 >이는 몇 가지 예에 불과하며, 냉장고에 있는 다양한 식품을 사용하여 다양한 요리를 만들 수 있는 가능성은 무궁무진합니다.
 
 ## Training
-클라우드 GPU 대여 서비스인 vast.ai를 이용해 학습을 진행했습니다. 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
+클라우드 GPU 대여 서비스인 [vast.ai](https://vast.ai/)를 이용해 학습을 진행했습니다. 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
 
 ### Pretrain
 `./scripts/pretrain_lightning.sh`
