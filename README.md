@@ -17,7 +17,7 @@
           <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
         </a>
 - 23.06.09 
-    - 💥 LLaVA의 학습 데이터셋을 한국어로 번역한 🤗[KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) / 🤗[KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 데이터셋 공개
+    - 💥 LLaVA의 학습 데이터셋을 한국어로 번역한 🤗[KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) / [KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 데이터셋 공개
     
     
 ## Visual Instruction Dataset 
