@@ -20,6 +20,12 @@
 - 23.06.09 
     - 💥 LLaVA의 학습 데이터셋을 한국어로 번역한 🤗[KoLLaVA-Instruct-150K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) / [KoLLaVA-CC3M-Pretrain-595K](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) 공개
 
+## Visual Chat Example
+<p align="center">
+    <a href="https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning"><img src="images/gradio_test.png" width="100%"></a> <br>
+  </p>
+
+
 ## Contents
 - [Visual Instruction Dataset](https://github.com/tabtoyou/KoLLaVA/tree/main#visual-instruction-dataset)
 - [Pretraining Dataset](https://github.com/tabtoyou/KoLLaVA/tree/main#pretraining-dataset)
