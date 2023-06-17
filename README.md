@@ -96,8 +96,8 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
  ```
 2. Package 설치
 ```bash
- conda create -n llava python=3.10 -y
- conda activate llava
+ conda create -n kollava python=3.10 -y
+ conda activate kollava
  pip install --upgrade pip 
  pip install -e .
  ```
