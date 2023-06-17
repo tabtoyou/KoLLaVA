@@ -81,7 +81,7 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 <summary>Details</summary>
 <div markdown="1">
 
-&nbsp;&nbsp;&nbsp;&nbsp; 사전학습 데이터셋은 image-text pair 데이터셋인 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 595K개로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
+&nbsp;&nbsp;&nbsp;&nbsp; 사전학습 데이터셋은 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 생성했으며, 595K개의 데이터로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
  
 </div>
 </details>
@@ -114,7 +114,7 @@ pip install flash-attn==1.0.2
 ```
 
 ## Inference
-현재는 single-turn 대화만 가능합니다. 동일한 입력으로 다양한 출력이 가능합니다. 현재 7B 모델의 결과는 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다.
+아래 명령어로는 single-turn 대화만 가능합니다. 파라미터(temperature, max length)를 조절해 다양한 출력 결과를 얻을 수 있습니다. 현재 7B 모델은 1epoch만 finetune한 모델로 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다.
 ```Shell
 python -m llava.eval.run_llava \
     --model-name tabtoyou/KoLLaVA-KoVicuna-7b \
