@@ -1,7 +1,8 @@
 # 🏔️ KoLLaVA
+[[Demo]](https://33166c79a780850dad.gradio.live) [[Dataset]](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) [[Model]](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) [[Paper Review]](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)
+
 - Korean Large Language and Vision Assistant (feat. [LLaVA](https://llava-vl.github.io/))
 - 이미지 기반 한국어 대화 가능한 멀티모달 모델
-[[Demo]](https://33166c79a780850dad.gradio.live) [[Dataset]](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) [[Model]](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) [[Paper Review]](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)
 
  
 <p align="center">
@@ -14,7 +15,7 @@
 
 ## Update Logs
 - 23.06.18
-    - 💥 Gradio를 이용한 [데모](https://33166c79a780850dad.gradio.live)를 오픈합니다! 
+    - 💥 Gradio를 이용한 [데모](https://33166c79a780850dad.gradio.live)를 오픈합니다!
 - 23.06.12 
     - 💥 한국어 Visual Instruction 데이터셋으로 학습한 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
     - 💥 Colab(Pro) 이용한 inference 예시  <a style='display:inline' target="_blank" href="https://colab.research.google.com/github/tabtoyou/KoLLaVA/blob/main/KoLLaVA-Kovicuna-7b_inference_test.ipynb">
@@ -25,7 +26,7 @@
 
 ## Visual Chat Example
 <p align="center">
-    <a href="https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning"><img src="images/gradio_test.png" width="100%"></a> <br>
+    <a href="https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning"><img src="images/demo_dog.png" width="90%"></a> <br>
   </p>
 
 
