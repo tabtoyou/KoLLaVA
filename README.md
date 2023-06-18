@@ -15,7 +15,7 @@
 
 ## Update Logs
 - 23.06.18
-    - 💥 Gradio를 이용한 [데모](https://33166c79a780850dad.gradio.live)를 오픈합니다!
+    - 💥 Gradio를 이용한 [데모](https://33166c79a780850dad.gradio.live)를 오픈합니다! (RTX 3090 GPU 1개)
 - 23.06.12 
     - 💥 한국어 Visual Instruction 데이터셋으로 학습한 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
     - 💥 Colab(Pro) 이용한 inference 예시  <a style='display:inline' target="_blank" href="https://colab.research.google.com/github/tabtoyou/KoLLaVA/blob/main/KoLLaVA-Kovicuna-7b_inference_test.ipynb">
