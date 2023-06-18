@@ -290,16 +290,14 @@ def http_bot(state, model_selector, temperature, max_new_tokens, request: gr.Req
         fout.write(json.dumps(data) + "\n")
 
 title_markdown = ("""
-# 🌋 LLaVA: Large Language and Vision Assistant
-[[Project Page]](https://llava-vl.github.io) [[Paper]](https://arxiv.org/abs/2304.08485) [[Code]](https://github.com/haotian-liu/LLaVA) [[Model]](https://huggingface.co/liuhaotian/LLaVA-13b-delta-v0)
+# 🏔️ KoLLaVA: Korean Large Language and Vision Assistant
+[[Code]](https://github.com/tabtoyou/KoLLaVA) [[Model]](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) [[Paper Review(한국어)]](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)
 """)
 
 tos_markdown = ("""
-### Terms of use
-By using this service, users are required to agree to the following terms:
-The service is a research preview intended for non-commercial use only. It only provides limited safety measures and may generate offensive content. It must not be used for any illegal, harmful, violent, racist, or sexual purposes. The service may collect user dialogue data for future research.
-Please click the "Flag" button if you get any inappropriate answer! We will collect those to keep improving our moderator.
-For an optimal experience, please use desktop computers for this demo, as mobile devices may compromise its quality.
+### 이용 약관
+본 서비스를 이용하려면 다음 약관에 동의하셔야 합니다:
+이 서비스는 비상업적 용도로만 사용할 수 있는 연구용 preview입니다. 제한된 안전 조치만 제공하며 불쾌감을 주는 콘텐츠가 생성될 수 있습니다. 불법, 유해, 폭력, 인종 차별 또는 성적 목적으로 사용해서는 안 됩니다. 본 서비스는 향후 연구를 위해 사용자 대화 데이터를 수집할 수 있습니다. 부적절한 답변이 있으면 'Flag' 버튼을 클릭해 주세요! 이러한 정보를 수집하여 지속적으로 개선할 것입니다. 모바일 기기에서는 품질이 저하될 수 있으므로 최적의 환경을 위해 데스크톱 컴퓨터를 사용해 주시기 바랍니다.
 """)
 
 
@@ -323,7 +321,7 @@ pre {
 def build_demo(embed_mode):
     textbox = gr.Textbox(show_label=False,
         placeholder="Enter text and press ENTER", visible=False).style(container=False)
-    with gr.Blocks(title="LLaVA", theme=gr.themes.Base(), css=css) as demo:
+    with gr.Blocks(title="KoLLaVA", theme=gr.themes.Base(), css=css) as demo:
         state = gr.State()
 
         if not embed_mode:
@@ -345,17 +343,18 @@ def build_demo(embed_mode):
                     label="Preprocess for non-square image")
 
                 cur_dir = os.path.dirname(os.path.abspath(__file__))
+                """
                 gr.Examples(examples=[
-                    [f"{cur_dir}/examples/extreme_ironing.jpg", "What is unusual about this image?"],
-                    [f"{cur_dir}/examples/waterview.jpg", "What are the things I should be cautious about when I visit here?"],
-                ], inputs=[imagebox, textbox])
+                    [f"https://raw.githubusercontent.com/tabtoyou/KoLLaVA/af930a712feb1e58a70d022c5405b49cfa24b0e4/images/dog.png", "이 강아지가 조심해야할 게 있을까요?"],
+                    [f"https://github.com/tabtoyou/KoLLaVA/raw/main/images/nodeul.jpeg", "사진 속에는 몇 명의 사람이 있나요? 그리고 사진의 전반적인 분위기는 어떤가요?"],
+                ], inputs=[imagebox, textbox]) """
 
                 with gr.Accordion("Parameters", open=False, visible=False) as parameter_row:
                     temperature = gr.Slider(minimum=0.0, maximum=1.0, value=0.2, step=0.1, interactive=True, label="Temperature",)
                     max_output_tokens = gr.Slider(minimum=0, maximum=1024, value=512, step=64, interactive=True, label="Max output tokens",)
 
             with gr.Column(scale=6):
-                chatbot = grChatbot(elem_id="chatbot", label="LLaVA Chatbot", visible=False).style(height=550)
+                chatbot = grChatbot(elem_id="chatbot", label="KoLLaVA Chatbot", visible=False).style(height=550)
                 with gr.Row():
                     with gr.Column(scale=8):
                         textbox.render()
