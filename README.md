@@ -257,6 +257,26 @@ Run
 sh scripts/finetune_lightning.sh v0
 ```
 
+## Serving
+### Web UI 데모 실행 방법
+여러 터미널에서 병렬적으로 실행해야 합니다. Linux의 경우 tmux/screen과 같은 terminal multiplexer를 이용해, 아래 명령어를 각각 다른 터미널 세션에서 순차적으로 실행해주세요.
+1. Launch a controller
+```shell
+python -m llava.serve.controller --host 0.0.0.0 --port 10000
+```
+2. Launch a model worker
+```
+python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path tabtoyou/KoLLaVA-KoVicuna-7b --multi-modal
+```
+프로세스가 모델 로드를 완료하고 "Uvicorn running on ..."이 표시될 때까지 기다립니다. 멀티 GPU를 사용해 load 할 경우 아래 명령어를 참고하세요.
+```
+python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path tabtoyou/KoLLaVA-KoVicuna-7b --multi-modal --num-gpus 2
+```
+3. Launch a gradio web server.
+```
+python -m llava.serve.gradio_web_server --controller http://localhost:10000 --share
+```
+`https://33166c79a780850dad.gradio.live` 와 같은 데모 link가 출력됩니다.
   
 
 ## To-do
