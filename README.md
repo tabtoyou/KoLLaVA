@@ -123,7 +123,7 @@ pip install flash-attn==1.0.2
 ```
 
 ## Inference
-아래 명령어로는 single-turn 대화만 가능합니다. 파라미터(temperature, max length)를 조절해 다양한 출력 결과를 얻을 수 있습니다. 현재 7B 모델은 1epoch만 finetune한 모델로 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다. (Model License: Apache License 2.0)
+아래 명령어로는 single-turn 대화만 가능합니다. 파라미터(temperature, max length)를 조절해 다양한 출력 결과를 얻을 수 있습니다. 현재 7B 모델은 1epoch만 finetune한 모델로 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다. (`Model License: Apache License 2.0`)
 ```Shell
 python -m llava.eval.run_llava \
     --model-name tabtoyou/KoLLaVA-KoVicuna-7b \
