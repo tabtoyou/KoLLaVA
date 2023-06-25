@@ -49,14 +49,13 @@
 | [detail_23k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/detail_23k.json) | [ko_detail_23k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_detail_23k.json) |
 | [complex_reasoning_77k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/complex_reasoning_77k.json) | [ko_complex_reasoning_77k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_complex_reasoning_77k.json) |
 
-License: Attribution-NonCommercial 4.0 International | OpenAI [policy](https://openai.com/policies/terms-of-use) 준수
-
 <details>
 <summary>Details</summary>
 <div markdown="1">
  
 &nbsp;&nbsp;&nbsp;&nbsp; Visual instruction tuning에 사용하는 instruction-following 데이터는 GPT-4로 생성된 데이터입니다. 이때 GPT-4의 인풋으로는 텍스트만 넣어줍니다(이미지 X). 구체적으로는 image-text pair 데이터셋인 COCO의 텍스트 정보(caption, bounding box)만을 이용해 instruction-following 형식의 데이터를 생성한 것입니다. 이러한 데이터 생성 파이프라인이 궁금하신 분은 [블로그](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)를 참고해주세요. 
 
+License: Attribution-NonCommercial 4.0 International | OpenAI [policy](https://openai.com/policies/terms-of-use) 준수
 
 </div>
 </details>
@@ -85,13 +84,13 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 | CC3M Concept-balanced 595K | [chat.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/chat.json) | [ko_chat.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K/blob/main/ko_chat.json) | 211 MB / 229 MB
 <!-- | LAION/CC/SBU BLIP-Caption Concept-balanced 558K | [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/raw/main/blip_laion_cc_sbu_558k.json) | - |  [metadata.json](#) | 181 MB -->
 
-License: [CC-3M](https://github.com/google-research-datasets/conceptual-captions/blob/master/LICENSE) 라이선스 준수
-
 <details>
 <summary>Details</summary>
 <div markdown="1">
 
 &nbsp;&nbsp;&nbsp;&nbsp; 사전학습 데이터셋은 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 생성했으며, 595K개의 데이터로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
+
+License: [CC-3M](https://github.com/google-research-datasets/conceptual-captions/blob/master/LICENSE) 준수
  
 </div>
 </details>
