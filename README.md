@@ -264,7 +264,7 @@ sh scripts/finetune_lightning.sh v0
 
 ## Serving
 ### Web UI 데모 실행 방법
-여러 터미널에서 병렬적으로 아래 명령을 실행해야 합니다. Linux의 경우 tmux/screen과 같은 terminal multiplexer를 이용해, 아래 명령어를 각각 다른 터미널 세션에서 순차적으로 실행해주세요.
+여러 터미널에서 아래 명령을 병렬적으로 실행해야 합니다. Linux의 경우 tmux/screen과 같은 terminal multiplexer를 이용해, 아래 명령어를 각각 다른 터미널 세션에서 순차적으로 실행해주세요.
 1. **Launch a controller**
 ```shell
 python -m llava.serve.controller --host 0.0.0.0 --port 10000
