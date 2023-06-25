@@ -36,6 +36,7 @@
 - [Install](https://github.com/tabtoyou/KoLLaVA/tree/main#install)
 - [Inference](https://github.com/tabtoyou/KoLLaVA/tree/main#inference)
 - [Training](https://github.com/tabtoyou/KoLLaVA/tree/main#training)
+- [Serving](https://github.com/tabtoyou/KoLLaVA/blob/main/README.md#serving)
     
 ## Visual Instruction Dataset 
 🤗 [**KoLLaVA-Instruct-150K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) : LLaVA의 instruction-following 데이터셋을 DeepL로 번역
@@ -48,11 +49,14 @@
 | [detail_23k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/detail_23k.json) | [ko_detail_23k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_detail_23k.json) |
 | [complex_reasoning_77k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/raw/main/complex_reasoning_77k.json) | [ko_complex_reasoning_77k.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k/blob/main/ko_complex_reasoning_77k.json) |
 
+License: Attribution-NonCommercial 4.0 International | OpenAI [policy](https://openai.com/policies/terms-of-use) 준수
+
 <details>
 <summary>Details</summary>
 <div markdown="1">
  
 &nbsp;&nbsp;&nbsp;&nbsp; Visual instruction tuning에 사용하는 instruction-following 데이터는 GPT-4로 생성된 데이터입니다. 이때 GPT-4의 인풋으로는 텍스트만 넣어줍니다(이미지 X). 구체적으로는 image-text pair 데이터셋인 COCO의 텍스트 정보(caption, bounding box)만을 이용해 instruction-following 형식의 데이터를 생성한 것입니다. 이러한 데이터 생성 파이프라인이 궁금하신 분은 [블로그](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)를 참고해주세요. 
+
 
 </div>
 </details>
@@ -80,6 +84,8 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 | --- |  --- | --- | ---: |
 | CC3M Concept-balanced 595K | [chat.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/chat.json) | [ko_chat.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K/blob/main/ko_chat.json) | 211 MB / 229 MB
 <!-- | LAION/CC/SBU BLIP-Caption Concept-balanced 558K | [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/raw/main/blip_laion_cc_sbu_558k.json) | - |  [metadata.json](#) | 181 MB -->
+
+License: [CC-3M](https://github.com/google-research-datasets/conceptual-captions/blob/master/LICENSE) 라이선스 준수
 
 <details>
 <summary>Details</summary>
@@ -118,7 +124,7 @@ pip install flash-attn==1.0.2
 ```
 
 ## Inference
-아래 명령어로는 single-turn 대화만 가능합니다. 파라미터(temperature, max length)를 조절해 다양한 출력 결과를 얻을 수 있습니다. 현재 7B 모델은 1epoch만 finetune한 모델로 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다.
+아래 명령어로는 single-turn 대화만 가능합니다. 파라미터(temperature, max length)를 조절해 다양한 출력 결과를 얻을 수 있습니다. 현재 7B 모델은 1epoch만 finetune한 모델로 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다. (Model License: Apache License 2.0)
 ```Shell
 python -m llava.eval.run_llava \
     --model-name tabtoyou/KoLLaVA-KoVicuna-7b \
@@ -260,19 +266,17 @@ sh scripts/finetune_lightning.sh v0
 ## Serving
 ### Web UI 데모 실행 방법
 여러 터미널에서 병렬적으로 실행해야 합니다. Linux의 경우 tmux/screen과 같은 terminal multiplexer를 이용해, 아래 명령어를 각각 다른 터미널 세션에서 순차적으로 실행해주세요.
-1. Launch a controller
+1. **Launch a controller**
 ```shell
 python -m llava.serve.controller --host 0.0.0.0 --port 10000
 ```
-2. Launch a model worker
+2. **Launch a model worker**
 ```
 python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path tabtoyou/KoLLaVA-KoVicuna-7b --multi-modal
 ```
-프로세스가 모델 로드를 완료하고 "Uvicorn running on ..."이 표시될 때까지 기다립니다. 멀티 GPU를 사용해 load 할 경우 아래 명령어를 참고하세요.
-```
-python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path tabtoyou/KoLLaVA-KoVicuna-7b --multi-modal --num-gpus 2
-```
-3. Launch a gradio web server.
+모델 로드를 완료하고 "Uvicorn running on ..."이 표시될 때까지 기다립니다. 멀티 GPU로 load 할 경우 `--num-gpus 2` 로 사용할 gpu 개수를 입력해줍니다.
+
+3. **Launch a gradio web server.**
 ```
 python -m llava.serve.gradio_web_server --controller http://localhost:10000 --share
 ```
