@@ -14,6 +14,10 @@
     
 
 ## Update Logs
+- 23.07.01
+    - 💥 🤗[KoLLaVA-KULLM-13B-8bit](https://huggingface.co/tabtoyou/KoLLaVA-KULLM-13B-8bit) 공개
+- 23.06.24
+    - 💥 🤗[Ko-Otter-9B-LACR-v0](https://huggingface.co/tabtoyou/Ko-Otter-9B-LACR-v0) : [Otter](https://otter-ntu.github.io/)를 KoLLaVA_Complex_Resoning_77k 데이터셋으로 학습한 모델 공개(test용)
 - 23.06.18
     - 💥 Gradio를 이용한 [데모](https://02ca5f70e95b287ecd.gradio.live)를 오픈합니다! (RTX 3090 GPU 1개)
 - 23.06.12 
@@ -286,7 +290,8 @@ python -m llava.serve.gradio_web_server --controller http://localhost:10000 --sh
 - [x] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
 - [x] Pretraining 데이터셋 한국어 번역 (LLaVA-CC3M-Pretrain-595K)
 - [x] LLaVA 모델에서 Vicuna -> KoVicuna-7B 대체 후 학습
-- [ ] KoLLaVA-13B 모델 학습 및 허깅페이스 공개
+- [x] Ko-Otter 모델 학습 및 허깅페이스 공개
+- [x] KoLLaVA-13B 모델 학습 및 허깅페이스 공개
 - [ ] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
 
