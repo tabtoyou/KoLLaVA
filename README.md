@@ -1,5 +1,5 @@
 # 🏔️ KoLLaVA
-[[Demo]](https://02ca5f70e95b287ecd.gradio.live) [[Dataset]](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) [[Model]](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) [[Paper Review]](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)
+[[Dataset]](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) [[Model]](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) [[Paper Review]](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)
 
 - Korean Large Language and Vision Assistant (feat. [LLaVA](https://llava-vl.github.io/))
 - 이미지 기반 한국어 대화 가능한 멀티모달 모델
@@ -15,9 +15,10 @@
 
 ## Update Logs
 - 23.07.01
-    - 💥 🤗[KoLLaVA-KULLM-13B-8bit](https://huggingface.co/tabtoyou/KoLLaVA-KULLM-13B-8bit) 공개
+    - 💥 🤗 [KoLLaVA-KULLM-13B-8bit](https://huggingface.co/tabtoyou/KoLLaVA-KULLM-13B-8bit) 공개 : [KULLM](https://huggingface.co/nlpai-lab/kullm-polyglot-12.8b-v2)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 학습
+    - 💥 클라우드 GPU 대여 비용 문제로 데모를 일시 중지합니다🥲
 - 23.06.24
-    - 💥 🤗[Ko-Otter-9B-LACR-v0](https://huggingface.co/tabtoyou/Ko-Otter-9B-LACR-v0) : [Otter](https://otter-ntu.github.io/)를 KoLLaVA_Complex_Resoning_77k 데이터셋으로 학습한 모델 공개(test용)
+    - 💥 🤗 [Ko-Otter-9B-LACR-v0](https://huggingface.co/tabtoyou/Ko-Otter-9B-LACR-v0) 공개 : [Otter](https://otter-ntu.github.io/)를 KoLLaVA_Complex_Resoning_77k 데이터셋으로 학습
 - 23.06.18
     - 💥 Gradio를 이용한 [데모](https://02ca5f70e95b287ecd.gradio.live)를 오픈합니다! (RTX 3090 GPU 1개)
 - 23.06.12 
