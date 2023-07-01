@@ -20,7 +20,7 @@
 - 23.06.24
     - 💥 🤗 [Ko-Otter-9B-LACR-v0](https://huggingface.co/tabtoyou/Ko-Otter-9B-LACR-v0) 공개 : [Otter](https://otter-ntu.github.io/)를 KoLLaVA_Complex_Resoning_77k 데이터셋으로 학습
 - 23.06.18
-    - 💥 Gradio를 이용한 [데모](https://02ca5f70e95b287ecd.gradio.live)를 오픈합니다! (RTX 3090 GPU 1개)
+    - 💥 ~~Gradio를 이용한 [데모](https://02ca5f70e95b287ecd.gradio.live)를 오픈합니다! (RTX 3090 GPU 1개)~~
 - 23.06.12 
     - 💥 한국어 Visual Instruction 데이터셋으로 학습한 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
     - 💥 Colab(Pro) 이용한 inference 예시  <a style='display:inline' target="_blank" href="https://colab.research.google.com/github/tabtoyou/KoLLaVA/blob/main/KoLLaVA-Kovicuna-7b_inference_test.ipynb">
