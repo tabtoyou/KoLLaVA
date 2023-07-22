@@ -296,6 +296,11 @@ python -m llava.serve.gradio_web_server --controller http://localhost:10000 --sh
 - [ ] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
 
+## Team
+KoLLaVA 프로젝트는 딥러닝 스터디 구성원들과 함께 진행했습니다.
+
+팀원 : [Jeonghyeon](https://github.com/gujh14), [Seongyeon](https://github.com/marie990), [Seonghwan](https://github.com/csh3695), [Seungwoo](https://github.com/seungwooham), [Seonghun](https://github.com/hsh-dev), [Taebaek](https://github.com/tabtoyou)
+
 
 ---
 
