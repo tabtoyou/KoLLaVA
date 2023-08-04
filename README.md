@@ -15,15 +15,18 @@
 
 ## Update Logs
 - 23.08.05
-    - 💥 🤗 [KoLLaVA-LLaMA-v2-7b-qlora-4bit](https://huggingface.co/tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora) 공개 : [Llama-2-ko-7b-Chat](https://huggingface.co/kfkas/Llama-2-ko-7b-Chat)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 QLoRA 학습 (RTX 3090 GPU 4개, 약 10시간) 
-    - [LLaVA](https://github.com/haotian-liu/LLaVA)의 최근 업데이트를 반영해 [KoLLaVA-from-LLaMA-2](https://github.com/tabtoyou/KoLLaVA/blob/main/docs/KoLLaVA_from_LLaMA2.md), [QLoRA](https://github.com/tabtoyou/KoLLaVA/blob/main/docs/LoRA.md), 4-/8-bit inference 코드 및 학습 방법을 공개합니다.
+    - 💥 🤗 [KoLLaVA-LLaMA-v2-7b-qlora-4bit](https://huggingface.co/tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora) 공개 : 🤗 [Llama-2-ko-7b-Chat](https://huggingface.co/kfkas/Llama-2-ko-7b-Chat)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 QLoRA 1epoch 학습
+           (RTX 3090 GPU 4개, 약 10시간) 
+    - 💥 [LLaVA](https://github.com/haotian-liu/LLaVA)의 최근 업데이트를 반영해 [KoLLaVA-from-LLaMA-2](https://github.com/tabtoyou/KoLLaVA/blob/main/docs/KoLLaVA_from_LLaMA2.md), [QLoRA](https://github.com/tabtoyou/KoLLaVA/blob/main/docs/LoRA.md), 4-/8-bit inference 코드 및 학습 방법을 공개합니다.
 - 23.07.01
-    - 💥 🤗 [KoLLaVA-KULLM-13B-8bit](https://huggingface.co/tabtoyou/KoLLaVA-KULLM-13B-8bit) 공개 : [KULLM](https://huggingface.co/nlpai-lab/kullm-polyglot-12.8b-v2)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 학습 -> 성능이 기대에 미치지 못해 삭제하였습니다. 더 나은 13B 모델을 추후에 공개하겠습니다.
-    - 클라우드 GPU 대여 비용 문제로 데모를 일시 중지합니다🥲
+    - 💥 🤗 [KoLLaVA-KULLM-13B-8bit](https://huggingface.co/tabtoyou/KoLLaVA-KULLM-13B-8bit) 공개 : [KULLM](https://huggingface.co/nlpai-lab/kullm-polyglot-12.8b-v2)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 학습
+
+         -> 성능이 기대에 미치지 못해 삭제합니다. 더 나은 13B 모델을 추후에 공개하겠습니다.
+    - 💥 클라우드 GPU 대여 비용 문제로 데모를 일시 중지합니다🥲
 - 23.06.24
     - 💥 🤗 [Ko-Otter-9B-LACR-v0](https://huggingface.co/tabtoyou/Ko-Otter-9B-LACR-v0) 공개 : [Otter](https://otter-ntu.github.io/)를 KoLLaVA_Complex_Resoning_77k 데이터셋으로 학습
 - 23.06.18
-    - ~~Gradio를 이용한 [데모](https://02ca5f70e95b287ecd.gradio.live)를 오픈합니다! (RTX 3090 GPU 1개)~~
+    - 💥 ~~Gradio를 이용한 [데모](https://02ca5f70e95b287ecd.gradio.live)를 오픈합니다! (RTX 3090 GPU 1개)~~
 - 23.06.12 
     - 💥 한국어 Visual Instruction 데이터셋으로 학습한 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
     - 💥 Colab(Pro) 이용한 inference 예시  <a style='display:inline' target="_blank" href="https://colab.research.google.com/github/tabtoyou/KoLLaVA/blob/main/KoLLaVA-Kovicuna-7b_inference_test.ipynb">
