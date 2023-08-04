@@ -1,5 +1,4 @@
 import argparse
-from collections import defaultdict
 import datetime
 import json
 import os
@@ -13,8 +12,6 @@ from llava.conversation import (default_conversation, conv_templates,
 from llava.constants import LOGDIR
 from llava.utils import (build_logger, server_error_msg,
     violates_moderation, moderation_msg)
-from llava.serve.gradio_patch import Chatbot as grChatbot
-from llava.serve.gradio_css import code_highlight_css
 import hashlib
 
 
@@ -154,27 +151,18 @@ def add_text(state, text, image, image_process_mode, request: gr.Request):
     if image is not None:
         text = text[:1200]  # Hard cut-off for images
         if '<image>' not in text:
+            # text = '<Image><image></Image>' + text
             text = text + '\n<image>'
         text = (text, image, image_process_mode)
-        state = default_conversation.copy()
+        if len(state.get_images(return_pil=True)) > 0:
+            state = default_conversation.copy()
     state.append_message(state.roles[0], text)
     state.append_message(state.roles[1], None)
     state.skip_next = False
     return (state, state.to_gradio_chatbot(), "", None) + (disable_btn,) * 5
 
 
-def post_process_code(code):
-    sep = "\n```"
-    if sep in code:
-        blocks = code.split(sep)
-        if len(blocks) % 2 == 1:
-            for i in range(1, len(blocks), 2):
-                blocks[i] = blocks[i].replace("\\_", "_")
-        code = sep.join(blocks)
-    return code
-
-
-def http_bot(state, model_selector, temperature, max_new_tokens, request: gr.Request):
+def http_bot(state, model_selector, temperature, top_p, max_new_tokens, request: gr.Request):
     logger.info(f"http_bot. ip: {request.client.host}")
     start_tstamp = time.time()
     model_name = model_selector
@@ -187,20 +175,30 @@ def http_bot(state, model_selector, temperature, max_new_tokens, request: gr.Req
     if len(state.messages) == state.offset + 2:
         # First round of conversation
         if "llava" in model_name.lower():
-            if "v1" in model_name.lower():
-                template_name = "llava_v1"
+            if 'llama-2' in model_name.lower():
+                template_name = "llava_llama_2"
+            elif "v1" in model_name.lower():
+                if 'mmtag' in model_name.lower():
+                    template_name = "v1_mmtag"
+                elif 'plain' in model_name.lower() and 'finetune' not in model_name.lower():
+                    template_name = "v1_mmtag"
+                else:
+                    template_name = "llava_v1"
             elif "mpt" in model_name.lower():
-                template_name = "mpt_multimodal"
+                template_name = "mpt"
             else:
-                template_name = "multimodal"
+                if 'mmtag' in model_name.lower():
+                    template_name = "v0_mmtag"
+                elif 'plain' in model_name.lower() and 'finetune' not in model_name.lower():
+                    template_name = "v0_mmtag"
+                else:
+                    template_name = "llava_v0"
         elif "mpt" in model_name:
             template_name = "mpt_text"
-        elif "koala" in model_name: # Hardcode the condition
-            template_name = "bair_v1"
-        elif "v1" in model_name:    # vicuna v1_1/v1_2
-            template_name = "vicuna_v1_1"
+        elif "llama-2" in model_name:
+            template_name = "llama_2"
         else:
-            template_name = "v1"
+            template_name = "vicuna_v1"
         new_state = conv_templates[template_name].copy()
         new_state.append_message(new_state.roles[0], state.messages[-2][1])
         new_state.append_message(new_state.roles[1], None)
@@ -236,6 +234,7 @@ def http_bot(state, model_selector, temperature, max_new_tokens, request: gr.Req
         "model": model_name,
         "prompt": prompt,
         "temperature": float(temperature),
+        "top_p": float(top_p),
         "max_new_tokens": min(int(max_new_tokens), 1536),
         "stop": state.sep if state.sep_style in [SeparatorStyle.SINGLE, SeparatorStyle.MPT] else state.sep2,
         "images": f'List of {len(state.get_images())} images: {all_image_hash}',
@@ -256,7 +255,6 @@ def http_bot(state, model_selector, temperature, max_new_tokens, request: gr.Req
                 data = json.loads(chunk.decode())
                 if data["error_code"] == 0:
                     output = data["text"][len(prompt):].strip()
-                    output = post_process_code(output)
                     state.messages[-1][-1] = output + "▌"
                     yield (state, state.to_gradio_chatbot()) + (disable_btn,) * 5
                 else:
@@ -290,14 +288,16 @@ def http_bot(state, model_selector, temperature, max_new_tokens, request: gr.Req
         fout.write(json.dumps(data) + "\n")
 
 title_markdown = ("""
-# 🏔️ KoLLaVA: Korean Large Language and Vision Assistant
-[[Code]](https://github.com/tabtoyou/KoLLaVA) [[Model]](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) [[Paper Review(한국어)]](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)
+# 🌋 LLaVA: Large Language and Vision Assistant
+[[Project Page]](https://llava-vl.github.io) [[Paper]](https://arxiv.org/abs/2304.08485) [[Code]](https://github.com/haotian-liu/LLaVA) [[Model]](https://huggingface.co/liuhaotian/LLaVA-13b-delta-v0)
 """)
 
 tos_markdown = ("""
-### 이용 약관
-본 서비스를 이용하려면 다음 약관에 동의하셔야 합니다:
-이 서비스는 비상업적 용도로만 사용할 수 있는 연구용 preview입니다. 제한된 안전 조치만 제공하며 불쾌감을 주는 콘텐츠가 생성될 수 있습니다. 불법, 유해, 폭력, 인종 차별 또는 성적 목적으로 사용해서는 안 됩니다. 본 서비스는 향후 연구를 위해 사용자 대화 데이터를 수집할 수 있습니다. 부적절한 답변이 있으면 'Flag' 버튼을 클릭해 주세요! 이러한 정보를 수집하여 지속적으로 개선할 것입니다. 모바일 기기에서는 품질이 저하될 수 있으므로 최적의 환경을 위해 데스크톱 컴퓨터를 사용해 주시기 바랍니다.
+### Terms of use
+By using this service, users are required to agree to the following terms:
+The service is a research preview intended for non-commercial use only. It only provides limited safety measures and may generate offensive content. It must not be used for any illegal, harmful, violent, racist, or sexual purposes. The service may collect user dialogue data for future research.
+Please click the "Flag" button if you get any inappropriate answer! We will collect those to keep improving our moderator.
+For an optimal experience, please use desktop computers for this demo, as mobile devices may compromise its quality.
 """)
 
 
@@ -307,21 +307,9 @@ The service is a research preview intended for non-commercial use only, subject 
 """)
 
 
-css = code_highlight_css + """
-pre {
-    white-space: pre-wrap;       /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-}
-"""
-
-
 def build_demo(embed_mode):
-    textbox = gr.Textbox(show_label=False,
-        placeholder="Enter text and press ENTER", visible=False).style(container=False)
-    with gr.Blocks(title="KoLLaVA", theme=gr.themes.Base(), css=css) as demo:
+    textbox = gr.Textbox(show_label=False, placeholder="Enter text and press ENTER", visible=False, container=False)
+    with gr.Blocks(title="LLaVA", theme=gr.themes.Base()) as demo:
         state = gr.State()
 
         if not embed_mode:
@@ -334,7 +322,8 @@ def build_demo(embed_mode):
                         choices=models,
                         value=models[0] if len(models) > 0 else "",
                         interactive=True,
-                        show_label=False).style(container=False)
+                        show_label=False,
+                        container=False)
 
                 imagebox = gr.Image(type="pil")
                 image_process_mode = gr.Radio(
@@ -343,18 +332,18 @@ def build_demo(embed_mode):
                     label="Preprocess for non-square image")
 
                 cur_dir = os.path.dirname(os.path.abspath(__file__))
-                """
                 gr.Examples(examples=[
-                    [f"https://raw.githubusercontent.com/tabtoyou/KoLLaVA/af930a712feb1e58a70d022c5405b49cfa24b0e4/images/dog.png", "이 강아지가 조심해야할 게 있을까요?"],
-                    [f"https://github.com/tabtoyou/KoLLaVA/raw/main/images/nodeul.jpeg", "사진 속에는 몇 명의 사람이 있나요? 그리고 사진의 전반적인 분위기는 어떤가요?"],
-                ], inputs=[imagebox, textbox]) """
+                    [f"{cur_dir}/examples/extreme_ironing.jpg", "What is unusual about this image?"],
+                    [f"{cur_dir}/examples/waterview.jpg", "What are the things I should be cautious about when I visit here?"],
+                ], inputs=[imagebox, textbox])
 
                 with gr.Accordion("Parameters", open=False, visible=False) as parameter_row:
                     temperature = gr.Slider(minimum=0.0, maximum=1.0, value=0.2, step=0.1, interactive=True, label="Temperature",)
+                    top_p = gr.Slider(minimum=0.0, maximum=1.0, value=0.7, step=0.1, interactive=True, label="Top P",)
                     max_output_tokens = gr.Slider(minimum=0, maximum=1024, value=512, step=64, interactive=True, label="Max output tokens",)
 
             with gr.Column(scale=6):
-                chatbot = grChatbot(elem_id="chatbot", label="KoLLaVA Chatbot", visible=False).style(height=550)
+                chatbot = gr.Chatbot(elem_id="chatbot", label="LLaVA Chatbot", visible=False, height=550)
                 with gr.Row():
                     with gr.Column(scale=8):
                         textbox.render()
@@ -383,15 +372,15 @@ def build_demo(embed_mode):
             [state, model_selector], [textbox, upvote_btn, downvote_btn, flag_btn])
         regenerate_btn.click(regenerate, [state, image_process_mode],
             [state, chatbot, textbox, imagebox] + btn_list).then(
-            http_bot, [state, model_selector, temperature, max_output_tokens],
+            http_bot, [state, model_selector, temperature, top_p, max_output_tokens],
             [state, chatbot] + btn_list)
         clear_btn.click(clear_history, None, [state, chatbot, textbox, imagebox] + btn_list)
 
         textbox.submit(add_text, [state, textbox, imagebox, image_process_mode], [state, chatbot, textbox, imagebox] + btn_list
-            ).then(http_bot, [state, model_selector, temperature, max_output_tokens],
+            ).then(http_bot, [state, model_selector, temperature, top_p, max_output_tokens],
                    [state, chatbot] + btn_list)
         submit_btn.click(add_text, [state, textbox, imagebox, image_process_mode], [state, chatbot, textbox, imagebox] + btn_list
-            ).then(http_bot, [state, model_selector, temperature, max_output_tokens],
+            ).then(http_bot, [state, model_selector, temperature, top_p, max_output_tokens],
                    [state, chatbot] + btn_list)
 
         if args.model_list_mode == "once":
