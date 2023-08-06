@@ -17,7 +17,7 @@
 - 23.08.05
     - 💥 🤗 [KoLLaVA-LLaMA-v2-7b-qlora-4bit](https://huggingface.co/tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora) 공개 : 🤗 [Llama-2-ko-7b-Chat](https://huggingface.co/kfkas/Llama-2-ko-7b-Chat)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 QLoRA 1epoch 학습
            (RTX 3090 GPU 4개, 약 10시간) 
-    - 💥 [LLaVA](https://github.com/haotian-liu/LLaVA)의 최근 업데이트를 반영. [KoLLaVA-from-LLaMA-2](https://github.com/tabtoyou/KoLLaVA/blob/main/docs/KoLLaVA_from_LLaMA2.md), [QLoRA](https://github.com/tabtoyou/KoLLaVA/blob/main/docs/LoRA.md), 4-/8-bit inference 코드 및 학습 방법 공개
+    - 💥 [LLaVA](https://github.com/haotian-liu/LLaVA)의 최근 업데이트를 반영. [LLaMA-2](https://github.com/tabtoyou/KoLLaVA/blob/main/docs/LLaVA_from_LLaMA2.md), [QLoRA](https://github.com/tabtoyou/KoLLaVA/blob/main/docs/LoRA.md) 기반의 코드 및 학습 방법 공유
 - 23.07.01
     - 💥 ~~🤗 KoLLaVA-KULLM-13B-8bit 공개 : [KULLM](https://huggingface.co/nlpai-lab/kullm-polyglot-12.8b-v2)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 학습~~
 
