@@ -276,22 +276,32 @@ sh scripts/finetune_lightning.sh v0
 ## Serving
 ### Web UI 데모 실행 방법
 여러 터미널에서 아래 명령을 병렬적으로 실행해야 합니다. Linux의 경우 tmux/screen과 같은 terminal multiplexer를 이용해, 아래 명령어를 각각 다른 터미널 세션에서 순차적으로 실행해주세요.
-1. **Launch a controller**
+**1. Launch a controller**
 ```shell
 python -m llava.serve.controller --host 0.0.0.0 --port 10000
 ```
-2. **Launch a model worker**
-```
-python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path tabtoyou/KoLLaVA-KoVicuna-7b --multi-modal
-```
-모델 로드를 완료하고 "Uvicorn running on ..."이 표시될 때까지 기다립니다. 멀티 GPU로 load 할 경우 `--num-gpus 2` 로 사용할 gpu 개수를 입력해줍니다.
 
-3. **Launch a gradio web server.**
+**2. Launch a gradio web server.**
 ```
 python -m llava.serve.gradio_web_server --controller http://localhost:10000 --share
 ```
-`https://33166c79a780850dad.gradio.live` 와 같은 데모 link가 출력됩니다.
-  
+`https://33166c79a780850dad.gradio.live` 와 같은 데모 link가 출력됩니다. 하지만 모델 목록에 모델이 없을 것 입니다. 아직 model worker를 시작하면 자동으로 업데이트됩니다.
+
+**3. Launch a model worker**
+```
+python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path tabtoyou/KoLLaVA-KoVicuna-7b
+```
+모델 로드를 완료하고 "Uvicorn running on ..."이 표시될 때까지 기다립니다. 멀티 GPU로 load 할 경우 `--num-gpus 2` 로 사용할 gpu 개수를 입력해줍니다.
+원하는 만큼 worker를 실행할 수 있으며, 동일한 Gradio 인터페이스에서 서로 다른 모델을 비교할 수 있습니다. 실행을 위해 컨트롤러는 동일하게 유지하고 `--port` 및 `--worker`를 다른 포트 번호로 수정하세요.
+```
+python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port <different from 40000, say 40001> --worker http://localhost:<change accordingly, i.e. 40001> --model-path <ckpt2>
+```
+
+**4. Launch a model worker (4-bit, 8-bit inference, quantized)**
+양자화된 모델(4bit, 8bit)을 실행하면 12GB VRAM만 있는 GPU에서도 실행할 수 있습니다. 다만 양자화하지 않은 모델만큼 정확하지 않을 수 있다는 점에 유의하세요. 실행 중인 모델 워커 명령에 `--load-4bit` 또는 `--load-8bit`를 추가하기만 하면 됩니다. 아래는 4bit 양자화로 실행하는 예제입니다.
+```
+python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora --load-4bit
+```
 
 ## To-do
 - [x] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
@@ -299,7 +309,7 @@ python -m llava.serve.gradio_web_server --controller http://localhost:10000 --sh
 - [x] LLaVA 모델에서 Vicuna -> KoVicuna-7B 대체 후 학습
 - [x] Ko-Otter 모델 학습 및 허깅페이스 공개
 - [x] KoLLaVA-13B 모델 학습 및 허깅페이스 공개
-- [ ] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
+- [x] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
 
 ## Team
