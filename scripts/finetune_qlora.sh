@@ -5,29 +5,28 @@
 ################## VICUNA ##################
 # PROMPT_VERSION=v1
 # MODEL_VERSION="vicuna-v1-3-7b"
-MODEL_VERSION=kfkas/Llama-2-ko-7b-Chat #beomi/llama-2-ko-7b
 ################## VICUNA ##################
 
 ################## LLaMA-2 ##################
 PROMPT_VERSION="llava_llama_2"
-# MODEL_VERSION="llama-2-7b-chat"
+MODEL_VERSION=kfkas/Llama-2-ko-7b-Chat #beomi/llama-2-ko-7b
 ################## LLaMA-2 ##################
 
 deepspeed llava/train/train_mem.py \
-    --deepspeed /root/LLaVA/scripts/zero2.json \
+    --deepspeed ./scripts/zero2.json \
     --lora_enable True \
     --bits 4 \
     --model_name_or_path $MODEL_VERSION \
     --version $PROMPT_VERSION \
-    --data_path /root/dataset/json/ko_llava_instruct_150k.json \
-    --image_folder /root/dataset/train2014 \
+    --data_path /path/to/ko_llava_instruct_150k.json \
+    --image_folder /path/to/train2014 \
     --vision_tower openai/clip-vit-large-patch14 \
-    --pretrain_mm_mlp_adapter /root/LLaVA_old/checkpoints/llava-beomi/llama-2-ko-7b-pretrain/mm_projector.bin \
+    --pretrain_mm_mlp_adapter /path/to/kollava-llama-2-ko-7b-pretrain/mm_projector.bin \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
     --bf16 True \
-    --output_dir ./checkpoints/llava-$MODEL_VERSION-finetune_lora \
+    --output_dir ./checkpoints/kollava-$MODEL_VERSION-finetune_lora \
     --num_train_epochs 1 \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 4 \
