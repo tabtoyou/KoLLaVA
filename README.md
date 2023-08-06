@@ -176,7 +176,7 @@ case2)
 ```Shell
 python -m llava.serve.cli \
     --model-path tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora \
-    --image-file /path/to/image.jpg \
+    --image_file /path/to/image.jpg \
     --load-4bit
 ```
 
