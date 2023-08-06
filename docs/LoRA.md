@@ -1,6 +1,3 @@
-# KoLLaVA (LoRA)
-
----
 # LLaVA (LoRA, Preview)
 
 NOTE: This is a technical preview, and is not yet ready for production use. We are still running hyperparameter search for the LoRA model, and will release the final model soon.  If you'd like to contribute to this, please contact us.
