@@ -1,5 +1,5 @@
 # 🏔️ KoLLaVA
-[[Dataset]](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) [[Model]](https://huggingface.co/tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora) [[Paper Review]](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)
+[[Dataset]](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) [[Model]](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) [[Paper Review]](https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning)
 
 - Korean Large Language and Vision Assistant (feat. [LLaVA](https://llava-vl.github.io/))
 - 이미지 기반 한국어 대화 가능한 멀티모달 모델
@@ -119,6 +119,7 @@ License: [CC-3M](https://github.com/google-research-datasets/conceptual-captions
 1. Clone 후 해당 디렉토리로 이동
 ```bash
  git clone https://github.com/tabtoyou/KoLLaVA.git
+ cd KoLLaVA
  ```
 2. Package 설치
 ```bash
@@ -170,107 +171,135 @@ case2)
 >
 >이는 몇 가지 예에 불과하며, 냉장고에 있는 다양한 식품을 사용하여 다양한 요리를 만들 수 있는 가능성은 무궁무진합니다.
 
+
++추가 : 아래 명령어는 Gradio 인터페이스 없이 KoLLaVA를 사용하여 이미지에 대해 multi-turn 채팅이 가능합니다. 또한 multi GPUs와 4bit/8bit 양자화 모델의 inference를 지원합니다. 4bit 양자화를 사용하는 KoLLaVA-LLaMA-v2-7b-qlora의 경우 단일 GPU에서 8GB 미만의 VRAM을 사용합니다.
+```Shell
+python -m llava.serve.cli \
+    --model-path tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora \
+    --image-file /path/to/image.jpg \
+    --load-4bit
+```
+
+
+
 ## Training
-클라우드 GPU 대여 서비스인 [vast.ai](https://vast.ai/)를 이용해 학습을 진행했습니다. 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
+클라우드 GPU 대여 서비스인 [vast.ai](https://vast.ai/)를 이용해 학습을 진행했습니다. `KoLLaVA-KoVicuna-7b` 모델 학습 시 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
++추가 : `KoLLaVA-LLaMA-v2-7b-qlora` 모델 학습에는 4개의 RTX 3090(24G) GPU를 사용했습니다.
+
 
 ### Pretrain
-`./scripts/pretrain_lightning.sh`
+`./scripts/pretrain.sh`
 ```Shell
 #!/bin/bash
 
-WEIGHT_VERSION=$1
+# Uncomment and set the following variables correspondingly to run this script:
 
-# Pretraining (5~6 hours on 4 A100/80GB GPU)
-torchrun --nnodes=1 --nproc_per_node=4 --master_port=25001 \
-   llava/train/train_mem.py \
-   --model_name_or_path junelee/ko_vicuna_7b \
-   --version $WEIGHT_VERSION \
-   --data_path /path/to/ko_chat.json \
-   --image_folder /path/to/CC3M_images \
-   --vision_tower openai/clip-vit-large-patch14 \
-   --tune_mm_mlp_adapter True \
-   --mm_vision_select_layer -2 \
-   --mm_use_im_start_end \
-   --bf16 True \
-   --output_dir ./checkpoints/kollava-lightning-7b-pretrain \
-   --num_train_epochs 1 \
-   --per_device_train_batch_size 32 \
-   --per_device_eval_batch_size 4 \
-   --gradient_accumulation_steps 1 \
-   --evaluation_strategy "no" \
-   --save_strategy "steps" \
-   --save_steps 2400 \
-   --save_total_limit 1 \
-   --learning_rate 2e-3 \
-   --weight_decay 0. \
-   --warmup_ratio 0.03 \
-   --lr_scheduler_type "cosine" \
-   --logging_steps 1 \
-   --tf32 True \
-   --model_max_length 2048 \
-   --gradient_checkpointing True \
-   --dataloader_num_workers 4 \
-   --lazy_preprocess True \
-   --report_to wandb
+# MODEL_VERSION=vicuna-v1-3-7b
+MODEL_VERSION=kfkas/Llama-2-ko-7b-Chat 
 
-# Extract projector features
-python scripts/extract_mm_projector.py \
- --model_name_or_path ./checkpoints/kollava-lightning-7b-pretrain \
- --output ./checkpoints/mm_projector/kollava-lightning-7b-pretrain.bin
-```
+########### DO NOT CHANGE ###########
+########### USE THIS FOR BOTH ###########
+PROMPT_VERSION=plain
+########### DO NOT CHANGE ###########
 
-Run
-```shell
-sh scripts/pretrain_lightning.sh v0
-```
-
-
-### Visual instruction tuning (Finetune)
-`./scripts/finetune_lightning.sh`
-```shell
-#!/bin/bash
-
-WEIGHT_VERSION=$1
-
-# Visual instruction tuning (6~7 hour on 4 A100/80GB GPU)
-torchrun --nnodes=1 --nproc_per_node=4 --master_port=25001 \
-    llava/train/train_mem.py \
-    --model_name_or_path junelee/ko_vicuna_7b \
-    --version $WEIGHT_VERSION \
-    --data_path /path/to/ko_llava_instruct_150k.json \
-    --image_folder /path/to/coco/train2014 \
+deepspeed llava/train/train_mem.py \
+    --deepspeed ./scripts/zero3_offload.json \
+    --model_name_or_path $MODEL_VERSION \
+    --version $PROMPT_VERSION \
+    --data_path /path/to/ko_chat.json \
+    --image_folder /path/to/CC3M \
     --vision_tower openai/clip-vit-large-patch14 \
-    --pretrain_mm_mlp_adapter ./checkpoints/mm_projector/kollava-lightning-7b-pretrain.bin \
+    --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \
-    --mm_use_im_start_end True \
+    --mm_use_im_start_end False \
+    --mm_use_im_patch_token False \
     --bf16 True \
-    --output_dir ./checkpoints/kollava-lightning-7b-finetune \
+    --output_dir ./checkpoints/kollava-$MODEL_VERSION-pretrain \
     --num_train_epochs 1 \
     --per_device_train_batch_size 16 \
     --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 1 \
+    --gradient_accumulation_steps 2 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
-    --save_steps 1500 \
+    --save_steps 24000 \
     --save_total_limit 1 \
-    --learning_rate 2e-5 \
+    --learning_rate 2e-3 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \
     --logging_steps 1 \
     --tf32 True \
-    --fsdp "full_shard auto_wrap" \
-    --fsdp_transformer_layer_cls_to_wrap 'LlamaDecoderLayer' \
     --model_max_length 2048 \
     --gradient_checkpointing True \
     --dataloader_num_workers 4 \
     --lazy_preprocess True \
     --report_to wandb
+
 ```
 
 Run
 ```shell
-sh scripts/finetune_lightning.sh v0
+sh scripts/pretrain.sh
+```
+
+
+### Visual instruction tuning (Finetune)
+`./scripts/finetune_qlora.sh`
+```shell
+#!/bin/bash
+
+# Uncomment and set the following variables correspondingly to run this script:
+
+################## VICUNA ##################
+# PROMPT_VERSION=v1
+# MODEL_VERSION="vicuna-v1-3-7b"
+################## VICUNA ##################
+
+################## LLaMA-2 ##################
+PROMPT_VERSION="llava_llama_2"
+MODEL_VERSION=kfkas/Llama-2-ko-7b-Chat #beomi/llama-2-ko-7b
+################## LLaMA-2 ##################
+
+deepspeed llava/train/train_mem.py \
+    --deepspeed ./scripts/zero2.json \
+    --lora_enable True \
+    --bits 4 \
+    --model_name_or_path $MODEL_VERSION \
+    --version $PROMPT_VERSION \
+    --data_path /path/to/ko_llava_instruct_150k.json \
+    --image_folder /path/to/train2014 \
+    --vision_tower openai/clip-vit-large-patch14 \
+    --pretrain_mm_mlp_adapter /path/to/kollava-llama-2-ko-7b-pretrain/mm_projector.bin \
+    --mm_vision_select_layer -2 \
+    --mm_use_im_start_end False \
+    --mm_use_im_patch_token False \
+    --bf16 True \
+    --output_dir ./checkpoints/kollava-$MODEL_VERSION-finetune_lora \
+    --num_train_epochs 1 \
+    --per_device_train_batch_size 16 \
+    --per_device_eval_batch_size 4 \
+    --gradient_accumulation_steps 2 \
+    --evaluation_strategy "no" \
+    --save_strategy "steps" \
+    --save_steps 500 \
+    --save_total_limit 1 \
+    --learning_rate 2e-4 \
+    --weight_decay 0. \
+    --warmup_ratio 0.03 \
+    --lr_scheduler_type "cosine" \
+    --logging_steps 1 \
+    --tf32 True \
+    --model_max_length 2048 \
+    --gradient_checkpointing True \
+    --lazy_preprocess True \
+    --dataloader_num_workers 4 \
+    --report_to wandb \
+    --freeze_mm_mlp_adapter True
+```
+
+Run
+```shell
+sh scripts/finetune_qlora.sh
 ```
 
 ## Serving
