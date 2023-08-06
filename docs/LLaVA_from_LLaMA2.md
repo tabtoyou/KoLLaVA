@@ -1,8 +1,3 @@
-# KoLLaVA (based on LLaMA 2)
-
-*Note: 
-
----
 # LLaVA (based on Llama 2 LLM, Preview)
 
 *NOTE: This is a technical preview. We are still running hyperparameter search, and will release the final model soon.  If you'd like to contribute to this, please contact us.*
@@ -28,7 +23,4 @@ Please checkout [`pretrain.sh`](https://github.com/haotian-liu/LLaVA/blob/main/s
 
 - Llama 2 is better at following the instructions of role playing; Llama 2 fails in following the instructions of translation
 - The quantitative evaluation on [LLaVA-Bench](https://github.com/haotian-liu/LLaVA/blob/main/docs/LLaVA_Bench.md) demonstrates on-par performance between Llama 2 and Llama 1 in LLaVA's multimodal chat ability.
-
-
-<img src="../images/llava_example_cmp.png" width="100%">
 
