@@ -184,6 +184,7 @@ python -m llava.serve.cli \
 
 ## Training
 클라우드 GPU 대여 서비스인 [vast.ai](https://vast.ai/)를 이용해 학습을 진행했습니다. `KoLLaVA-KoVicuna-7b` 모델 학습 시 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
+
 +추가 : `KoLLaVA-LLaMA-v2-7b-qlora` 모델 학습에는 4개의 RTX 3090(24G) GPU를 사용했습니다.
 
 
@@ -244,6 +245,8 @@ sh scripts/pretrain.sh
 
 
 ### Visual instruction tuning (Finetune)
+QLoRA 학습 시 아래 방법을 따르시면 됩니다. full-finetuning을 원하실 경우 `--lora_enable True`와 `--bits 4`를 제거하세요.
+
 `./scripts/finetune_qlora.sh`
 ```shell
 #!/bin/bash
@@ -305,6 +308,7 @@ sh scripts/finetune_qlora.sh
 ## Serving
 ### Web UI 데모 실행 방법
 여러 터미널에서 아래 명령을 병렬적으로 실행해야 합니다. Linux의 경우 tmux/screen과 같은 terminal multiplexer를 이용해, 아래 명령어를 각각 다른 터미널 세션에서 순차적으로 실행해주세요.
+
 **1. Launch a controller**
 ```shell
 python -m llava.serve.controller --host 0.0.0.0 --port 10000
