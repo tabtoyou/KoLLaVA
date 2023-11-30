@@ -15,7 +15,7 @@
 
 ## Update Logs
 - 23.11.30
-    - 💥 🤗 [KoLLaVA-v1.5-Synatra-7b](https://huggingface.co/tabtoyou/KoLLaVA-v1.5-Synatra-7b) 공개 : 🤗 [Synatra-7b-v0.3-dpo](https://huggingface.co/maywell/Synatra-7B-v0.3-dpo)를 [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)으로 Full Fineturn 학습 (V100 80G 8개, 약 13시간)
+    - 💥 🤗 [KoLLaVA-v1.5-Synatra-7b](https://huggingface.co/tabtoyou/KoLLaVA-v1.5-Synatra-7b) 공개 : 🤗 [Synatra-7b-v0.3-dpo](https://huggingface.co/maywell/Synatra-7B-v0.3-dpo)를 [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)(공개 예정)으로 Full Fineturn 학습 (V100 80G 8개, 약 13시간) / 코드 및 학습방법 공개 예정
 - 23.08.05
     - 💥 🤗 [KoLLaVA-LLaMA-v2-7b-qlora-4bit](https://huggingface.co/tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora) 공개 : 🤗 [Llama-2-ko-7b-Chat](https://huggingface.co/kfkas/Llama-2-ko-7b-Chat)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 QLoRA 1epoch 학습
            (RTX 3090 GPU 4개, 약 10시간) 
