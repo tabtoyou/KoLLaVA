@@ -129,7 +129,7 @@ class Conversation:
                                 result.paste(pil_img, ((height - width) // 2, 0))
                                 return result
                         image = expand2square(image)
-                    elif image_process_mode == "Crop":
+                    elif image_process_mode in ["Default", "Crop"]:
                         pass
                     elif image_process_mode == "Resize":
                         image = image.resize((336, 336))
@@ -141,11 +141,12 @@ class Conversation:
                     shortest_edge = int(min(max_len / aspect_ratio, min_len, min_hw))
                     longest_edge = int(shortest_edge * aspect_ratio)
                     W, H = image.size
-                    if H > W:
-                        H, W = longest_edge, shortest_edge
-                    else:
-                        H, W = shortest_edge, longest_edge
-                    image = image.resize((W, H))
+                    if longest_edge != max(image.size):
+                        if H > W:
+                            H, W = longest_edge, shortest_edge
+                        else:
+                            H, W = shortest_edge, longest_edge
+                        image = image.resize((W, H))
                     if return_pil:
                         images.append(image)
                     else:
@@ -178,10 +179,8 @@ class Conversation:
                     image.save(buffered, format="JPEG")
                     img_b64_str = base64.b64encode(buffered.getvalue()).decode()
                     img_str = f'<img src="data:image/png;base64,{img_b64_str}" alt="user upload image" />'
-                    ret.append([img_str, None])
-                    msg = msg.replace('<image>', '').strip()
-                    if len(msg) > 0:
-                        ret.append([msg, None])
+                    msg = img_str + msg.replace('<image>', '').strip()
+                    ret.append([msg, None])
                 else:
                     ret.append([msg, None])
             else:
@@ -278,7 +277,7 @@ If a question does not make any sense, or is not factually coherent, explain why
 conv_llava_llama_2 = Conversation(
     system="You are a helpful language and vision assistant. "
            "You are able to understand the visual content that the user provides, "
-           "and assist the user with a variety of tasks using natural language in korean.",
+           "and assist the user with a variety of tasks using natural language.",
     roles=("USER", "ASSISTANT"),
     version="llama_v2",
     messages=(),
@@ -286,6 +285,19 @@ conv_llava_llama_2 = Conversation(
     sep_style=SeparatorStyle.LLAMA_2,
     sep="<s>",
     sep2="</s>",
+)
+
+conv_mistral = Conversation(
+    system="당신은 유용한 언어 및 시각 도우미입니다. "
+           "사용자가 제공하는 시각적 콘텐츠를 이해할 수 있으며, "
+           "자연어를 사용하여 사용자에게 다양한 작업을 지원합니다.",
+    roles=("<|im_start|>user\n", "<|im_start|>assistant\n"),
+    version="mistral",
+    messages=(),
+    offset=0,
+    sep_style=SeparatorStyle.TWO,
+    sep=" ",
+    sep2="<|im_end|>",
 )
 
 conv_mpt = Conversation(
@@ -314,10 +326,8 @@ conv_llava_v0 = Conversation(
            "The assistant gives helpful, detailed, and polite answers to the human's questions.",
     roles=("Human", "Assistant"),
     messages=(
-        ("Human", "Hi!"),
-        ("Assistant", "Hi there! How can I help you today?")
     ),
-    offset=2,
+    offset=0,
     sep_style=SeparatorStyle.SINGLE,
     sep="###",
 )
@@ -360,7 +370,7 @@ conv_llava_v1_mmtag = Conversation(
     version="v1_mmtag",
 )
 
-default_conversation = conv_vicuna_v0
+default_conversation = conv_vicuna_v1
 conv_templates = {
     "default": conv_vicuna_v0,
     "v0": conv_vicuna_v0,
@@ -375,6 +385,7 @@ conv_templates = {
     "llava_v1": conv_llava_v1,
     "v1_mmtag": conv_llava_v1_mmtag,
     "llava_llama_2": conv_llava_llama_2,
+    "mistral": conv_mistral,
 
     "mpt": conv_mpt,
 }
