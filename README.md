@@ -47,7 +47,7 @@
 - [Install](https://github.com/tabtoyou/KoLLaVA/tree/main#install)
 - [Inference](https://github.com/tabtoyou/KoLLaVA/tree/main#inference)
 - [Training](https://github.com/tabtoyou/KoLLaVA/tree/main#training)
-- [Serving](https://github.com/tabtoyou/KoLLaVA/blob/main/README.md#serving)
+<!-- - [Serving](https://github.com/tabtoyou/KoLLaVA/blob/main/README.md#serving) -->
     
 
 ## Install
@@ -147,9 +147,9 @@ sh scripts/v1_5/pretrain.sh
 
 ### Visual Instruction Tuning
 
-1. Prepare data
+#### 1. Prepare data
 
-instruction tuning data(json) : [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)
+Instruction tuning data : [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)
 
 - COCO: [train2017](http://images.cocodataset.org/zips/train2017.zip)
 - GQA: [images](https://downloads.cs.stanford.edu/nlp/data/gqa/images.zip)
@@ -210,7 +210,7 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 </details>
 
 
-2. Start training!
+#### 2. Start training!
 
 Pretrain을 통해 projection layer를 생성하거나, 저희가 미리 pretrain한 [KoLLaVA-v1.5-mlp2x-336px-pretrain-Synatra-7b](https://huggingface.co/tabtoyou/KoLLaVA-v1.5-mlp2x-336px-pretrain-Synatra-7b)를 다운로드 받으세요.
 
