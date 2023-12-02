@@ -71,10 +71,11 @@ pip install flash-attn --no-build-isolation
 
 ## Inference
 터미널 창에서 아래 명령어를 통해 multi-turn 대화가 가능합니다. `--load-4bit`,`--load-8bit`을 명령어 뒤에 추가하면 4-bit, 8-bit quantized inference가 가능하며, 이때 `KoLLaVA-v1.5-Synatra-7b` 기준으로 single GPU에서 8GB 이하의 VRAM으로 실행할 수 있습니다. 또한 M1/M2 칩이 탑재된 Apple 디바이스를 사용하는 경우 `--device` flag를 사용하여 mps 디바이스를 지정할 수 있습니다: `--device mps`
+```
 python -m llava.serve.cli \
     --model-path tabtoyou/KoLLaVA-v1.5-Synatra-7b \
     --image-file "https://llava-vl.github.io/static/images/view.jpg" \
-
+```
 
 ## Training
 LLaVA/KoLLaVA 학습은 two stage로 진행됩니다: (1) Pretraining(feature alignment stage): CC3M 데이터셋을 필터링한 595K subset을 이용하여, *frozen pretrained* vision encoder와 *frozen LLM*을 연결하는 projection layer를 학습합니다.; (2) Finetuning(visual instruction tuning stage): 150K 멀티모달 instruction-following 데이터와 약 academic-oriented tasks 및 [AI-Hub](https://www.aihub.or.kr/)에서 얻은 460K VQA 데이터를 이용해 multimodal instruction을 학습합니다.
