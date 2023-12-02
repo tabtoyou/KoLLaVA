@@ -104,7 +104,7 @@ Base LLM 모델인 Synatra-7b의 weights은 주어진 training scripts를 실행
 
 Pretrain 과정에는 8 A100 GPUs (80GB) 기준 약 4시간이 소요됐습니다.
 
-### Pretraining Dataset 
+#### Pretraining Dataset 
 🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) : LLaVA Pretrain 데이터셋의 index에 맞춰 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions) 한국어 caption 추출
 
 | Data | English | Korean | Size |
@@ -175,7 +175,7 @@ Instruction tuning data : [KoLLaVA-Instruct-612k](https://huggingface.co/dataset
 <summary>KoLLaVA-v1 Visual Instruction Dataset</summary>
 <div markdown="1">
 
-### Visual Instruction Dataset 
+#### Visual Instruction Dataset 
 🤗 [**KoLLaVA-Instruct-150K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) : LLaVA의 instruction-following 데이터셋을 DeepL로 번역
 
 | English | Korean |
@@ -287,6 +287,7 @@ python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:
 - [x] Ko-Otter 모델 학습 및 허깅페이스 공개
 - [x] KoLLaVA-13B 모델 학습 및 허깅페이스 공개
 - [x] QLoRA 이용해 low GPU memory에서도 학습할 수 있도록 (RTX 3090 등)
+- [x] LLaVA-v1.5 코드 반영 및 모델 공개
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
 
 ## Team
