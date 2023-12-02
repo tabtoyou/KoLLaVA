@@ -4,10 +4,10 @@ deepspeed llava/train/train_mem.py \
     --deepspeed ./scripts/zero3.json \
     --model_name_or_path maywell/Synatra-7B-v0.3-dpo \
     --version mistral \
-    --data_path /workspace/data/kollava_v1_5.json \
-    --image_folder /workspace/data \
+    --data_path /workspace/data/kollava_v1_5_instruct_mix612k.json \
+    --image_folder /workspace/data/ \
     --vision_tower openai/clip-vit-large-patch14-336 \
-    --pretrain_mm_mlp_adapter ./checkpoints/kollava-v1.5-synatra7b-pretrain_1126/mm_projector.bin \
+    --pretrain_mm_mlp_adapter ./checkpoints/KoLLaVA-v1.5-mlp2x-336px-pretrain-Synatra-7b/mm_projector.bin \
     --mm_projector_type mlp2x_gelu \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \

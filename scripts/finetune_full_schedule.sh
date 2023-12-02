@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# IMPORTANT: this is the training script for the original LLaVA, NOT FOR LLaVA V1.5!
+
 # Uncomment and set the following variables correspondingly to run this script:
 
 ################## VICUNA ##################
@@ -13,7 +15,7 @@
 ################## LLaMA-2 ##################
 
 deepspeed llava/train/train_mem.py \
-    --deepspeed /path/to/deepspeed.json \
+    --deepspeed ./scripts/zero2.json \
     --model_name_or_path ./checkpoints/$MODEL_VERSION \
     --version $PROMPT_VERSION \
     --data_path ./playground/data/llava_instruct_158k.json \

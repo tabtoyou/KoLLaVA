@@ -1,31 +1,28 @@
 #!/bin/bash
 
 deepspeed llava/train/train_mem.py \
-    --lora_enable True --lora_r 128 --lora_alpha 256 --mm_projector_lr 2e-5 \
-    --deepspeed ./scripts/zero3.json \
+    --deepspeed ./scripts/zero2.json \
     --model_name_or_path maywell/Synatra-7B-v0.3-dpo \
-    --version mistral \
-    --data_path /workspace/data/kollava_v1_5.json \
-    --image_folder /workspace/data \
+    --version plain \
+    --data_path /workspace/data/pretrain/ko_chat.json \
+    --image_folder /workspace/data/pretrain/images \
     --vision_tower openai/clip-vit-large-patch14-336 \
-    --pretrain_mm_mlp_adapter ./checkpoints/kollava-v1.5-synatra7b-pretrain_1126/mm_projector.bin \
     --mm_projector_type mlp2x_gelu \
+    --tune_mm_mlp_adapter True \
     --mm_vision_select_layer -2 \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
-    --image_aspect_ratio pad \
-    --group_by_modality_length True \
     --bf16 True \
-    --output_dir ./checkpoints/kollava-v1.5-synatra7b \
+    --output_dir ./checkpoints/KoLLaVA-v1.5-mlp2x-336px-pretrain-Synatra-7b \
     --num_train_epochs 1 \
-    --per_device_train_batch_size 16 \
+    --per_device_train_batch_size 32 \
     --per_device_eval_batch_size 4 \
     --gradient_accumulation_steps 1 \
     --evaluation_strategy "no" \
     --save_strategy "steps" \
-    --save_steps 50000 \
+    --save_steps 24000 \
     --save_total_limit 1 \
-    --learning_rate 2e-4 \
+    --learning_rate 1e-3 \
     --weight_decay 0. \
     --warmup_ratio 0.03 \
     --lr_scheduler_type "cosine" \

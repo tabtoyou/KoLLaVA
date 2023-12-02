@@ -15,7 +15,7 @@
 
 ## Update Logs
 - 23.11.30
-    - 💥 🤗 [KoLLaVA-v1.5-Synatra-7b](https://huggingface.co/tabtoyou/KoLLaVA-v1.5-Synatra-7b) 공개 : 🤗 [Synatra-7b-v0.3-dpo](https://huggingface.co/maywell/Synatra-7B-v0.3-dpo)를 [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)(공개 예정)으로 Full-finetuning (A100 80G 8개, 약 13시간) / 코드 및 학습방법 공개 예정
+    - 💥 🤗 [KoLLaVA-v1.5-Synatra-7b](https://huggingface.co/tabtoyou/KoLLaVA-v1.5-Synatra-7b) 공개 : 🤗 [Synatra-7b-v0.3-dpo](https://huggingface.co/maywell/Synatra-7B-v0.3-dpo)를 [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)(공개 예정)으로 Full-finetuning (A100 80G 8개, 약 13시간) / 데이터 구축 및 학습은 [복지24](https://www.bokji24.com/)의 지원을 받아 진행되었습니다.🙂
 - 23.08.05
     - 💥 🤗 [KoLLaVA-LLaMA-v2-7b-qlora-4bit](https://huggingface.co/tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora) 공개 : 🤗 [Llama-2-ko-7b-Chat](https://huggingface.co/kfkas/Llama-2-ko-7b-Chat)을 [KoLLaVA-Instruct-150k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k)으로 QLoRA 1epoch 학습
            (RTX 3090 GPU 4개, 약 10시간) 
@@ -31,7 +31,7 @@
     - 💥 ~~Gradio를 이용한 [데모](https://02ca5f70e95b287ecd.gradio.live)를 오픈합니다! (RTX 3090 GPU 1개)~~
 - 23.06.12 
     - 💥 한국어 Visual Instruction 데이터셋으로 학습한 🤗[KoLLaVA-KoVicuna-7B](https://huggingface.co/tabtoyou/KoLLaVA-KoVicuna-7b) 공개
-    - 💥 Colab(Pro) 이용한 inference 예시  <a style='display:inline' target="_blank" href="https://colab.research.google.com/github/tabtoyou/KoLLaVA/blob/main/KoLLaVA-Kovicuna-7b_inference_test.ipynb">
+    - 💥 Colab(Pro) 이용한 inference 예시  <a style='display:inline' target="_blank" href="https://colab.research.google.com/github/tabtoyou/KoLLaVA/blob/main/KoLLaVA-Kovicuna-7b(v1)_inference_test.ipynb">
           <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
         </a>
 - 23.06.09 
@@ -44,16 +44,138 @@
 
 
 ## Contents
-- [Visual Instruction Dataset](https://github.com/tabtoyou/KoLLaVA/tree/main#visual-instruction-dataset)
-- [Pretraining Dataset](https://github.com/tabtoyou/KoLLaVA/tree/main#pretraining-dataset)
 - [Install](https://github.com/tabtoyou/KoLLaVA/tree/main#install)
 - [Inference](https://github.com/tabtoyou/KoLLaVA/tree/main#inference)
 - [Training](https://github.com/tabtoyou/KoLLaVA/tree/main#training)
 - [Serving](https://github.com/tabtoyou/KoLLaVA/blob/main/README.md#serving)
     
-## Visual Instruction Dataset 
-🤗 [**KoLLaVA-Instruct-150K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) : LLaVA의 instruction-following 데이터셋을 DeepL로 번역
 
+## Install
+1. Clone 후 해당 디렉토리로 이동
+```bash
+ git clone https://github.com/tabtoyou/KoLLaVA.git
+ cd KoLLaVA
+ ```
+2. Package 설치
+```bash
+ conda create -n kollava python=3.10 -y
+ conda activate kollava
+ pip install --upgrade pip 
+ pip install -e .
+ ```
+3. 학습 진행할 경우 추가 Package 설치
+```bash
+pip install -e ".[train]"
+pip install flash-attn --no-build-isolation
+```
+
+## Inference
+터미널 창에서 아래 명령어를 통해 multi-turn 대화가 가능합니다. `--load-4bit`,`--load-8bit`을 명령어 뒤에 추가하면 4-bit, 8-bit quantized inference가 가능하며, 이때 `KoLLaVA-v1.5-Synatra-7b` 기준으로 single GPU에서 8GB 이하의 VRAM으로 실행할 수 있습니다. 또한 M1/M2 칩이 탑재된 Apple 디바이스를 사용하는 경우 `--device` flag를 사용하여 mps 디바이스를 지정할 수 있습니다: `--device mps`
+python -m llava.serve.cli \
+    --model-path tabtoyou/KoLLaVA-v1.5-Synatra-7b \
+    --image-file "https://llava-vl.github.io/static/images/view.jpg" \
+
+
+## Training
+LLaVA/KoLLaVA 학습은 two stage로 진행됩니다: (1) Pretraining(feature alignment stage): CC3M 데이터셋을 필터링한 595K subset을 이용하여, *frozen pretrained* vision encoder와 *frozen LLM*을 연결하는 projection layer를 학습합니다.; (2) Finetuning(visual instruction tuning stage): 150K 멀티모달 instruction-following 데이터와 약 academic-oriented tasks 및 [AI-Hub](https://www.aihub.or.kr/)에서 얻은 460K VQA 데이터를 이용해 multimodal instruction을 학습합니다.
+
+KoLLaVA-v1.5는 8 A100 GPUs (80GB)로 학습했으며, 더 적은 GPU로 학습할 경우 `per_device_train_batch_size`를 줄이고 그 수에 맞게 `gradient_accumulation_steps`를 늘리면 됩니다. 항상 global batch size(`per_device_train_batch_size` x `gradient_accumulation_steps` x `num_gpus`)는 다음을 유지하세요: 
+
+### Hyperparameters
+
+1. Pretraining
+
+| Hyperparameter | Global Batch Size | Learning rate | Epochs | Max length | Weight decay |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| KoLLaVA-v1.5-Synatra-7B | 256 | 1e-3 | 1 | 2048 | 0 |
+
+2. Finetuning
+
+| Hyperparameter | Global Batch Size | Learning rate | Epochs | Max length | Weight decay |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| KoLLaVA-v1.5-Synatra-7B | 128 | 2e-5 | 1 | 2048 | 0 |
+
+### Download Synatra checkpoints (automatically)
+
+Base LLM 모델인 Synatra-7b의 weights은 주어진 training scripts를 실행하면 자동으로 다운로드 됩니다. 
+
+### Pretrain (feature alignment)
+
+Pretrain 과정에는 8 A100 GPUs (80GB) 기준 약 4시간이 소요됐습니다.
+
+### Pretraining Dataset 
+🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) : LLaVA Pretrain 데이터셋의 index에 맞춰 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions) 한국어 caption 추출
+
+| Data | English | Korean | Size |
+| --- |  --- | --- | ---: |
+| CC3M Concept-balanced 595K | [chat.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/chat.json) | [ko_chat.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K/blob/main/ko_chat.json) | 211 MB / 229 MB
+<!-- | LAION/CC/SBU BLIP-Caption Concept-balanced 558K | [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/raw/main/blip_laion_cc_sbu_558k.json) | - |  [metadata.json](#) | 181 MB -->
+
+<details>
+<summary>Details</summary>
+<div markdown="1">
+
+&nbsp;&nbsp;&nbsp;&nbsp; 사전학습 데이터셋은 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 생성했으며, 595K개의 데이터로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
+
+License: [CC-3M](https://github.com/google-research-datasets/conceptual-captions/blob/master/LICENSE) 준수
+ 
+</div>
+</details>
+
+<details>
+<summary>Image Dataset</summary>
+<div markdown="1">
+
+[`images.zip`](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/blob/main/images.zip) - LLaVA의 저자들은 사전학습에 사용한 이미지 파일도 공유했습니다. 이 이미지 파일은 연구 외에 다른 용도로 사용해서는 안 되며, 이미지의 사용은 CC3M의 라이선스를 준수해야 합니다. 원본 CC3M 데이터셋 소유자 혹은 참조된 이미지의 소유자가 요청할 경우 언제든지 해당 이미지는 삭제될 수 있습니다.
+
+</div>
+</details>
+
+
+
+Training script with DeepSpeed ZeRO-2: [`pretrain.sh`](https://github.com/tabtoyou/KoLLaVA/blob/main/scripts/v1_5/pretrain.sh).
+
+- `--mm_projector_type mlp2x_gelu`: the two-layer MLP vision-language connector.
+- `--vision_tower openai/clip-vit-large-patch14-336`: CLIP ViT-L/14 336px.
+
+
+Run
+```shell
+sh scripts/v1_5/pretrain.sh
+```
+
+
+### Visual Instruction Tuning
+
+1. Prepare data
+
+instruction tuning data(json) : [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)
+
+- COCO: [train2017](http://images.cocodataset.org/zips/train2017.zip)
+- GQA: [images](https://downloads.cs.stanford.edu/nlp/data/gqa/images.zip)
+- VisualGenome: [part1](https://cs.stanford.edu/people/rak248/VG_100K_2/images.zip), [part2](https://cs.stanford.edu/people/rak248/VG_100K_2/images2.zip)
+- EKVQA: [ekvqa](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=&topMenu=&aihubDataSe=data&dataSetSn=71357)
+
+위의 데이터를 모두 다운받은 뒤, `/workspace/data` 디렉토리를 아래와 같이 구성하세요. 이때 `workspace`는 각자의 이미지 데이터를 저장하는 디렉토리 이름입니다. 
+* 주의 : COCO,GQA,VG 데이터셋은 모두 academic-oriented tasks인 영어 데이터셋이며, 이를 DeepL로 번역했습니다. 번역 과정에서 오류가 있을 수 있으며, VG의 경우 영어 단어 OCR 및 Bounding Box에 대한 정보도 포함합니다. `EKVQA`는 AI-Hub에서 제공하는 `외부 지식 기반 멀티모달 질의응답 데이터`이며 상식적인 지식이나 배경지식을 바탕으로 이미지에 관련한 질문에 대해 답을 하는 task로, Instruction-following data 형식으로 재구성했습니다. 데이터셋에 대한 저작권은 각 데이터셋의 license 규정을 따릅니다.
+
+```
+├── coco
+│   └── train2017
+├── gqa
+│   └── images
+├── vg
+│   ├── VG_100K
+│   └── VG_100K_2
+└── ekvqa
+```
+
+<details>
+<summary>KoLLaVA-v1 Visual Instruction Dataset</summary>
+<div markdown="1">
+
+### Visual Instruction Dataset 
+🤗 [**KoLLaVA-Instruct-150K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-150k) : LLaVA의 instruction-following 데이터셋을 DeepL로 번역
 
 | English | Korean |
 | --- | --- |
@@ -87,227 +209,46 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
 </div>
 </details>
 
-## Pretraining Dataset 
-🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) : LLaVA Pretrain 데이터셋의 index에 맞춰 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions) 한국어 caption 추출
+
+2. Start training!
+
+Pretrain을 통해 projection layer를 생성하거나, 저희가 미리 pretrain한 [KoLLaVA-v1.5-mlp2x-336px-pretrain-Synatra-7b](https://huggingface.co/tabtoyou/KoLLaVA-v1.5-mlp2x-336px-pretrain-Synatra-7b)를 다운로드 받으세요.
+
+Visual instruction tuning은 8x A100 (80G)에서 7B 기준 대략 13시간 학습했습니다.
+
+Training script with DeepSpeed ZeRO-3: [`finetune.sh`](https://github.com/tabtoyou/KoLLaVA/blob/main/scripts/v1_5/finetune.sh).
+
+Run
+```shell
+sh scripts/v1_5/finetune.sh
+```
+
+GPU 메모리가 충분하지 않을 경우:
+
+- LoRA: [`finetune_lora.sh`](https://github.com/tabtoyou/KoLLaVA/blob/main/scripts/v1_5/finetune_lora.sh). global batch size(`per_device_train_batch_size` x `gradient_accumulation_steps` x `num_gpus`) 위에서 주어진 scripts와 동일하게 유지하세요.
+
+New options to note:
+
+- `--mm_projector_type mlp2x_gelu`: the two-layer MLP vision-language connector.
+- `--vision_tower openai/clip-vit-large-patch14-336`: CLIP ViT-L/14 336px.
+- `--image_aspect_ratio pad`: this pads the non-square images to square, instead of cropping them; it slightly reduces hallucination.
+- `--group_by_modality_length True`: this should only be used when your instruction tuning dataset contains both language (e.g. ShareGPT) and multimodal (e.g. LLaVA-Instruct). It makes the training sampler only sample a single modality (either image or language) during training, which we observe to speed up training by ~25%, and does not affect the final outcome.
 
 
-
-| Data | English | Korean | Size |
-| --- |  --- | --- | ---: |
-| CC3M Concept-balanced 595K | [chat.json](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/raw/main/chat.json) | [ko_chat.json](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K/blob/main/ko_chat.json) | 211 MB / 229 MB
-<!-- | LAION/CC/SBU BLIP-Caption Concept-balanced 558K | [blip_laion_cc_sbu_558k.json](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/raw/main/blip_laion_cc_sbu_558k.json) | - |  [metadata.json](#) | 181 MB -->
 
 <details>
-<summary>Details</summary>
+<summary>KoLLaVA-v1 Pretrain</summary>
 <div markdown="1">
 
-&nbsp;&nbsp;&nbsp;&nbsp; 사전학습 데이터셋은 [CC3M](https://ai.google.com/research/ConceptualCaptions/)을 필터링해 생성했으며, 595K개의 데이터로 이루어져 있습니다. 데이터셋 구조와 영어 버전 다운로드 방법에 대한 자세한 설명은 [여기](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K)를, 한국어 데이터셋은 [여기](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K)를 참고하세요. (주의 : DeepL로 번역한 결과가 아니며, 품질이 조금 떨어질 수 있습니다.)
+&nbsp;&nbsp;&nbsp;&nbsp; 클라우드 GPU 대여 서비스인 [vast.ai](https://vast.ai/)를 이용해 학습을 진행했습니다. `KoLLaVA-KoVicuna-7b` 모델 학습 시 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
 
-License: [CC-3M](https://github.com/google-research-datasets/conceptual-captions/blob/master/LICENSE) 준수
++추가 : `KoLLaVA-LLaMA-v2-7b-qlora` 모델 학습에는 4개의 RTX 3090(24G) GPU를 사용했습니다.
  
 </div>
 </details>
 
-<details>
-<summary>Image Dataset</summary>
-<div markdown="1">
 
-[`images.zip`](https://huggingface.co/datasets/liuhaotian/LLaVA-CC3M-Pretrain-595K/blob/main/images.zip) - LLaVA의 저자들은 사전학습에 사용한 이미지 파일도 공유했습니다. 이 이미지 파일은 연구 외에 다른 용도로 사용해서는 안 되며, 이미지의 사용은 CC3M의 라이선스를 준수해야 합니다. 원본 CC3M 데이터셋 소유자 혹은 참조된 이미지의 소유자가 요청할 경우 언제든지 해당 이미지는 삭제될 수 있습니다.
-
-</div>
-</details>
-
-## Install
-1. Clone 후 해당 디렉토리로 이동
-```bash
- git clone https://github.com/tabtoyou/KoLLaVA.git
- cd KoLLaVA
- ```
-2. Package 설치
-```bash
- conda create -n kollava python=3.10 -y
- conda activate kollava
- pip install --upgrade pip 
- pip install -e .
- ```
-3. 학습 진행할 경우 추가 Package 설치
-```bash
-pip install ninja
-pip install flash-attn==1.0.2 
-```
-
-## Inference
-아래 명령어로는 single-turn 대화만 가능합니다. 파라미터(temperature, max length)를 조절해 다양한 출력 결과를 얻을 수 있습니다. 현재 7B 모델은 1epoch만 finetune한 모델로 아직 부족한 부분이 많습니다. 추후 13B 모델, Quantized 모델 등 개선된 모델들을 공개할 예정입니다. (`Model License: Apache License 2.0`)
-```Shell
-python -m llava.eval.run_llava \
-    --model-name tabtoyou/KoLLaVA-KoVicuna-7b \
-    --image-file /path/to/image \
-    --query "이 이미지에 대해 자세히 설명하세요."
-```
-
-#### 결과 예시
-이미지 :
-
-<a href="https://cocoa-t.tistory.com/entry/%EB%85%BC%EB%AC%B8-%EB%A6%AC%EB%B7%B0-LLaVA-Large-Language-and-Vision-Assistant-Visual-Instruction-Tuning"><img src="images/food.png" width="40%"></a>
-
-
-질문 :
-> 이미지 속 재료들로 어떤 음식을 만들 수 있을까요?
-
-답변 :
-
-case1)
-
->  이미지에는 냉장고 문이 열려 있고 내부에 다양한 식품이 가득 차 있습니다. 냉장고에는 블루베리, 딸기, 당근, 우유, 버터, 코코넛 및 기타 과일과 채소가 들어 있습니다. 이러한 재료를 사용하여 맛있는 간식이나 식사를 만들 수 있습니다. 예를 들어 블루베리와 딸기를 섞어 블루베리 딸기 샐러드를 만들 수 있습니다. 또는 당근과 우유를 섞어 당근 샐러드를 만들거나 당근을 버터와 함께 구워 따뜻하게 먹을 수 있습니다. 또한 버터와 코코넛을 사용하여 코코넛 버터 파르페를 만들 수도 있습니다. 이러한 재료를 사용하여 창의력을 발휘하여 맛있는 간식이나 식사를 만들 수 있습니다.
-
-
-case2)
-
->  이미지에는 다양한 식품이 있는 냉장고가 있습니다. 냉장고에는 과일, 빵, 우유, 물, 주스, 달걀, 치즈, 버터, 베리류, 블루베리, 딸기, 당근 등 다양한 식품이 들어 있습니다. 이러한 재료를 사용하여 다양한 요리를 만들 수 있습니다. 몇 가지 가능한 옵션은 다음과 같습니다:
->
->1. 과일 샐러드: 베리류, 딸기, 당근을 섞어 신선하고 건강한 샐러드를 만들 수 있습니다.
->2. 과일 베이스 스무디: 베리류, 딸기, 당근을 섞어 상큼한 스무디를 만들어 보세요.
->3. 과일 샌드위치: 베리류, 딸기, 당근을 샌드위치 빵에 얹어 맛있는 샌드위치를 만들어 보세요.
->4. 과일 디저트: 베리류, 딸기, 당근을 섞어 과일 코블러나 팬케이크와 같은 달콤한 디저트를 만들어 보세요.
->5. 과일 기반 요리: 베리류, 딸기, 당근을 샐러드나 수프에 넣어 맛있는 요리를 만들어 보세요.
->
->이는 몇 가지 예에 불과하며, 냉장고에 있는 다양한 식품을 사용하여 다양한 요리를 만들 수 있는 가능성은 무궁무진합니다.
-
-
-+추가 : 아래 명령어는 Gradio 인터페이스 없이 KoLLaVA를 사용하여 이미지에 대해 multi-turn 채팅이 가능합니다. 또한 multi GPUs와 4bit/8bit 양자화 모델의 inference를 지원합니다. 4bit 양자화를 사용하는 KoLLaVA-LLaMA-v2-7b-qlora의 경우 단일 GPU에서 8GB 미만의 VRAM을 사용합니다.
-```Shell
-python -m llava.serve.cli \
-    --model-path tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora \
-    --image_file /path/to/image.jpg \
-    --load-4bit
-```
-
-
-
-## Training
-클라우드 GPU 대여 서비스인 [vast.ai](https://vast.ai/)를 이용해 학습을 진행했습니다. `KoLLaVA-KoVicuna-7b` 모델 학습 시 4개의 A100(80GB) GPU를 대여했으며 Disk Space는 200GB 이상을 추천드립니다(시간 당 약 `$7.44`). 인스턴스 생성 시 Docker image로 `pytorch/pytorch:2.0.1-cuda11.7-cudnn8-devel` 를 사용했습니다. 
-
-+추가 : `KoLLaVA-LLaMA-v2-7b-qlora` 모델 학습에는 4개의 RTX 3090(24G) GPU를 사용했습니다.
-
-
-### Pretrain
-`./scripts/pretrain.sh`
-```Shell
-#!/bin/bash
-
-# Uncomment and set the following variables correspondingly to run this script:
-
-# MODEL_VERSION=vicuna-v1-3-7b
-MODEL_VERSION=kfkas/Llama-2-ko-7b-Chat 
-
-########### DO NOT CHANGE ###########
-########### USE THIS FOR BOTH ###########
-PROMPT_VERSION=plain
-########### DO NOT CHANGE ###########
-
-deepspeed llava/train/train_mem.py \
-    --deepspeed ./scripts/zero3_offload.json \
-    --model_name_or_path $MODEL_VERSION \
-    --version $PROMPT_VERSION \
-    --data_path /path/to/ko_chat.json \
-    --image_folder /path/to/CC3M \
-    --vision_tower openai/clip-vit-large-patch14 \
-    --tune_mm_mlp_adapter True \
-    --mm_vision_select_layer -2 \
-    --mm_use_im_start_end False \
-    --mm_use_im_patch_token False \
-    --bf16 True \
-    --output_dir ./checkpoints/kollava-$MODEL_VERSION-pretrain \
-    --num_train_epochs 1 \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 2 \
-    --evaluation_strategy "no" \
-    --save_strategy "steps" \
-    --save_steps 24000 \
-    --save_total_limit 1 \
-    --learning_rate 2e-3 \
-    --weight_decay 0. \
-    --warmup_ratio 0.03 \
-    --lr_scheduler_type "cosine" \
-    --logging_steps 1 \
-    --tf32 True \
-    --model_max_length 2048 \
-    --gradient_checkpointing True \
-    --dataloader_num_workers 4 \
-    --lazy_preprocess True \
-    --report_to wandb
-
-```
-
-Run
-```shell
-sh scripts/pretrain.sh
-```
-
-
-### Visual instruction tuning (Finetune)
-QLoRA 학습 시 아래 방법을 따르시면 됩니다. full-finetuning을 원하실 경우 `--lora_enable True`와 `--bits 4`를 제거하세요.
-
-`./scripts/finetune_qlora.sh`
-```shell
-#!/bin/bash
-
-# Uncomment and set the following variables correspondingly to run this script:
-
-################## VICUNA ##################
-# PROMPT_VERSION=v1
-# MODEL_VERSION="vicuna-v1-3-7b"
-################## VICUNA ##################
-
-################## LLaMA-2 ##################
-PROMPT_VERSION="llava_llama_2"
-MODEL_VERSION=kfkas/Llama-2-ko-7b-Chat #beomi/llama-2-ko-7b
-################## LLaMA-2 ##################
-
-deepspeed llava/train/train_mem.py \
-    --deepspeed ./scripts/zero2.json \
-    --lora_enable True \
-    --bits 4 \
-    --model_name_or_path $MODEL_VERSION \
-    --version $PROMPT_VERSION \
-    --data_path /path/to/ko_llava_instruct_150k.json \
-    --image_folder /path/to/train2014 \
-    --vision_tower openai/clip-vit-large-patch14 \
-    --pretrain_mm_mlp_adapter /path/to/kollava-llama-2-ko-7b-pretrain/mm_projector.bin \
-    --mm_vision_select_layer -2 \
-    --mm_use_im_start_end False \
-    --mm_use_im_patch_token False \
-    --bf16 True \
-    --output_dir ./checkpoints/kollava-$MODEL_VERSION-finetune_lora \
-    --num_train_epochs 1 \
-    --per_device_train_batch_size 16 \
-    --per_device_eval_batch_size 4 \
-    --gradient_accumulation_steps 2 \
-    --evaluation_strategy "no" \
-    --save_strategy "steps" \
-    --save_steps 500 \
-    --save_total_limit 1 \
-    --learning_rate 2e-4 \
-    --weight_decay 0. \
-    --warmup_ratio 0.03 \
-    --lr_scheduler_type "cosine" \
-    --logging_steps 1 \
-    --tf32 True \
-    --model_max_length 2048 \
-    --gradient_checkpointing True \
-    --lazy_preprocess True \
-    --dataloader_num_workers 4 \
-    --report_to wandb \
-    --freeze_mm_mlp_adapter True
-```
-
-Run
-```shell
-sh scripts/finetune_qlora.sh
-```
-
-## Serving
+<!-- ## Serving
 ### Web UI 데모 실행 방법
 여러 터미널에서 아래 명령을 병렬적으로 실행해야 합니다. Linux의 경우 tmux/screen과 같은 terminal multiplexer를 이용해, 아래 명령어를 각각 다른 터미널 세션에서 순차적으로 실행해주세요.
 
@@ -336,7 +277,7 @@ python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:
 양자화된 모델(4bit, 8bit)을 실행하면 12GB VRAM만 있는 GPU에서도 실행할 수 있습니다. 다만 양자화하지 않은 모델만큼 정확하지 않을 수 있다는 점에 유의하세요. 실행 중인 모델 워커 명령에 `--load-4bit` 또는 `--load-8bit`를 추가하기만 하면 됩니다. 아래는 4bit 양자화로 실행하는 예제입니다.
 ```
 python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:10000 --port 40000 --worker http://localhost:40000 --model-path tabtoyou/KoLLaVA-LLaMA-v2-7b-qlora --load-4bit
-```
+``` -->
 
 ## To-do
 - [x] Finetuning 데이터셋 한국어 번역 (LLaVA-Instruct-150K)
@@ -348,10 +289,11 @@ python -m llava.serve.model_worker --host 0.0.0.0 --controller http://localhost:
 - [ ] KoLLaVA의 linear layer를 Q-former로 업데이트([InstructBLIP](https://arxiv.org/abs/2305.06500))
 
 ## Team
-KoLLaVA 프로젝트는 딥러닝 스터디 구성원들과 함께 진행했습니다.
+KoLLaVA-v1 프로젝트는 딥러닝 스터디 구성원들과 함께 진행했습니다.
 
 팀원 : [Jeonghyeon](https://github.com/gujh14), [Seongyeon](https://github.com/marie990), [Seonghwan](https://github.com/csh3695), [Seungwoo](https://github.com/seungwooham), [Seonghun](https://github.com/hsh-dev), [Taebaek](https://github.com/tabtoyou)
 
+KoLLaVA-v1.5 프로젝트는 [복지24](https://www.bokji24.com/)의 지원을 받아 진행되었습니다.
 
 ---
 
