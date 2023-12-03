@@ -80,9 +80,9 @@ python -m llava.serve.cli \
 ## Training
 LLaVA/KoLLaVA 학습은 two stage로 진행됩니다: (1) Pretraining(feature alignment stage): CC3M 데이터셋을 필터링한 595K subset을 이용하여, *frozen pretrained* vision encoder와 *frozen LLM*을 연결하는 projection layer를 학습합니다.; (2) Finetuning(visual instruction tuning stage): 150K 멀티모달 instruction-following 데이터와 약 academic-oriented tasks 및 [AI-Hub](https://www.aihub.or.kr/)에서 얻은 460K VQA 데이터를 이용해 multimodal instruction을 학습합니다.
 
-KoLLaVA-v1.5는 8 A100 GPUs (80GB)로 학습했으며, 더 적은 GPU로 학습할 경우 `per_device_train_batch_size`를 줄이고 그 수에 맞게 `gradient_accumulation_steps`를 늘리면 됩니다. 항상 global batch size(`per_device_train_batch_size` x `gradient_accumulation_steps` x `num_gpus`)는 다음을 유지하세요: 
+KoLLaVA-v1.5는 8 A100 GPUs (80GB)로 학습했으며, 더 적은 GPU로 학습할 경우 `per_device_train_batch_size`를 줄이고 그 수에 맞게 `gradient_accumulation_steps`를 늘리면 됩니다. 재현을 위해서는 global batch size(`per_device_train_batch_size` x `gradient_accumulation_steps` x `num_gpus`)를 아래 Hyperparameters에 맞게 유지하세요.
 
-### Hyperparameters
+#### Hyperparameters
 
 1. Pretraining
 
@@ -96,15 +96,15 @@ KoLLaVA-v1.5는 8 A100 GPUs (80GB)로 학습했으며, 더 적은 GPU로 학습�
 | --- | ---: | ---: | ---: | ---: | ---: |
 | KoLLaVA-v1.5-Synatra-7B | 128 | 2e-5 | 1 | 2048 | 0 |
 
-### Download Synatra checkpoints (automatically)
+#### Download Synatra checkpoints (automatically)
 
 Base LLM 모델인 Synatra-7b의 weights은 주어진 training scripts를 실행하면 자동으로 다운로드 됩니다. 
 
-### Pretrain (feature alignment)
+## Pretrain (feature alignment)
 
 Pretrain 과정에는 8 A100 GPUs (80GB) 기준 약 4시간이 소요됐습니다.
 
-#### Pretraining Dataset 
+### Prepare Pretraining Dataset 
 🤗 [**KoLLaVA-CC3M-Pretrain-595K**](https://huggingface.co/datasets/tabtoyou/KoLLaVA-CC3M-Pretrain-595K) : LLaVA Pretrain 데이터셋의 index에 맞춰 [Ko-CC3M](https://github.com/QuoQA-NLP/Ko-conceptual-captions) 한국어 caption 추출
 
 | Data | English | Korean | Size |
@@ -146,9 +146,9 @@ sh scripts/v1_5/pretrain.sh
 ```
 
 
-### Visual Instruction Tuning
+## Visual Instruction Tuning
 
-#### 1. Prepare data
+### 1. Prepare data
 
 Instruction tuning data : [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)
 
@@ -205,13 +205,14 @@ Finetuning에 사용되는 이미지 데이터셋은 [COCO-train2014](https://co
  ```bash
  wget http://images.cocodataset.org/zips/train2014.zip
  ```
- 
- 
 </div>
 </details>
 
 
-#### 2. Start training!
+</div>
+</details>
+
+### 2. Start training!
 
 Pretrain을 통해 projection layer를 생성하거나, 저희가 미리 pretrain한 [KoLLaVA-v1.5-mlp2x-336px-pretrain-Synatra-7b](https://huggingface.co/tabtoyou/KoLLaVA-v1.5-mlp2x-336px-pretrain-Synatra-7b)를 다운로드 받으세요.
 
