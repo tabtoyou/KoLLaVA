@@ -51,7 +51,7 @@
     
 
 ## Install
-아래 과정은 Linux 기준으로 작성되었습니다. macOS에서 inference 테스트 하실 경우 [여기](https://github.com/tabtoyou/KoLLaVA/blob/030e533ef086d42a1de05534dd2be55a9388ae88/docs/macOS)를 참고하세요.
+아래 과정은 Linux 기준으로 작성되었습니다. macOS에서 테스트 하실 경우 [여기](https://github.com/tabtoyou/KoLLaVA/blob/030e533ef086d42a1de05534dd2be55a9388ae88/docs/macOS)를 참고하세요.
 1. Clone 후 해당 디렉토리로 이동
 ```bash
  git clone https://github.com/tabtoyou/KoLLaVA.git
@@ -72,7 +72,7 @@ pip install flash-attn --no-build-isolation
 
 <!-- `--load-4bit`,`--load-8bit`을 명령어 뒤에 추가하면 4-bit, 8-bit quantized inference가 가능하며, 이때 `KoLLaVA-v1.5-Synatra-7b` 기준으로 single GPU에서 8GB 이하의 VRAM으로 실행할 수 있습니다. -->
 ## Inference
-터미널 창에서 아래 명령어를 통해 multi-turn 대화가 가능합니다. 또한 M1/M2 칩이 탑재된 Apple 디바이스를 사용하는 경우 `--device` flag를 사용하여 mps 디바이스를 지정할 수 있습니다. (`--device mps`)
+터미널 창에서 아래 명령어를 통해 multi-turn 대화가 가능합니다. 또한 M1/M2 칩이 탑재된 Apple 디바이스를 사용하는 경우 `--device` flag를 사용하여 mps 디바이스를 지정할 수 있습니다. (`--device mps`) macOS에서 테스트 하실 경우 [여기](https://github.com/tabtoyou/KoLLaVA/blob/030e533ef086d42a1de05534dd2be55a9388ae88/docs/macOS)를 참고하세요.
 ```
 python -m llava.serve.cli \
     --model-path tabtoyou/KoLLaVA-v1.5-Synatra-7b \
