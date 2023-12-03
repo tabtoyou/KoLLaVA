@@ -51,6 +51,7 @@
     
 
 ## Install
+아래 과정은 Linux 기준으로 작성되었습니다. macOS에서 inference 테스트 하실 경우 [여기](https://github.com/tabtoyou/KoLLaVA/blob/030e533ef086d42a1de05534dd2be55a9388ae88/docs/macOS)를 참고하세요.
 1. Clone 후 해당 디렉토리로 이동
 ```bash
  git clone https://github.com/tabtoyou/KoLLaVA.git
