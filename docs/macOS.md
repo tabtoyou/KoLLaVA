@@ -1,10 +1,10 @@
-# Run LLaVA on macOS
+# Run KoLLaVA-v1.5 on macOS
 
 *참고: macOS에서의 KoLLaVA는 아직 완전히 지원되지는 않습니다. macOS에서 더 많은 기능이 추가될 예정이니 계속 지켜봐 주세요.*
 
 ## Installation
 
-1. Clone this repository and navigate to LLaVA folder
+1. Clone this repository and navigate to KoLLaVA folder
 ```bash
 git clone https://github.com/tabtoyou/KoLLaVA.git
 cd KoLLaVA
