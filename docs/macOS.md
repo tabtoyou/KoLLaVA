@@ -22,8 +22,19 @@ pip uninstall bitsandbytes
 
 ## Run demo
 
-Specify `--device mps` when launching model worker or CLI.
+CLI 실행 시 `--device mps` 를 뒤에 추가해주세요.
 
-See instructions [here](https://github.com/tabtoyou/KoLLaVA/tree/main#inference).
+```
+python -m llava.serve.cli \      
+    --model-path tabtoyou/KoLLaVA-v1.5-Synatra-7b \
+    --image-file "https://llava-vl.github.io/static/images/view.jpg" \
+    --device mps
+```
+Multi-turn 대화 예시
+
+<img width="854" alt="macOS_inference_test" src="https://github.com/tabtoyou/KoLLaVA/assets/42518610/40cde0bc-c6f7-471f-9f6f-ae9971d3de7f">
+
 
 Note that quantization (4-bit, 8-bit) is *NOT* supported on macOS. Stay tuned for the 4-bit support on macOS!
+
+
