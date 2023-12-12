@@ -298,7 +298,7 @@ KoLLaVA-v1 프로젝트는 딥러닝 스터디 구성원들과 함께 진행했�
 
 팀원 : [Jeonghyeon](https://github.com/gujh14), [Seongyeon](https://github.com/marie990), [Seonghwan](https://github.com/csh3695), [Seungwoo](https://github.com/seungwooham), [Seonghun](https://github.com/hsh-dev), [Taebaek](https://github.com/tabtoyou)
 
-KoLLaVA-v1.5 프로젝트는 [복지24](https://www.bokji24.com/)의 지원을 받아 진행되었습니다.
+KoLLaVA-v1.5 프로젝트는 [복지이십사](https://binbox.bokji24.com)의 지원을 받아 진행되었습니다.
 
 ---
 
