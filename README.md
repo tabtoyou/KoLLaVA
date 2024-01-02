@@ -15,7 +15,7 @@
 
 ## Update Logs
 - 24.01.02
-    - 💥 🤗 [KoLLaVA-Instruct-581k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-v1.5-Instruct-581k/blob/main/kollava_v1_5_mix581k.json) 공개 : [LLaVA-v1.5 instruction 데이터](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/blob/main/llava_v1_5_mix665k.json) 필터링 및 번역, [외부 지식 기반 VQA 데이터(AI Hub)](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=71357) 활용해 multi-turn instruction 데이터 추가
+    - 💥 🤗 [KoLLaVA-Instruct-581k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-v1.5-Instruct-581k) 공개 : [LLaVA-v1.5 instruction 데이터](https://huggingface.co/datasets/liuhaotian/LLaVA-Instruct-150K/blob/main/llava_v1_5_mix665k.json) 필터링 및 번역, [외부 지식 기반 VQA 데이터(AI Hub)](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=71357) 활용해 multi-turn instruction 데이터 추가
 - 23.11.30
     - 💥 🤗 [KoLLaVA-v1.5-Synatra-7b](https://huggingface.co/tabtoyou/KoLLaVA-v1.5-Synatra-7b) 공개 : 🤗 [Synatra-7b-v0.3-dpo](https://huggingface.co/maywell/Synatra-7B-v0.3-dpo)를 [KoLLaVA-Instruct-581k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-v1.5-Instruct-581k/blob/main/kollava_v1_5_mix581k.json)으로 Full-finetuning (A100 80G 8개, 약 13시간)
 - 23.08.05
