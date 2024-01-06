@@ -154,7 +154,7 @@ sh scripts/v1_5/pretrain.sh
 
 ### 1. Prepare data
 
-Instruction tuning data : [KoLLaVA-Instruct-612k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-Instruct-612k)
+Instruction tuning data : 🤗 [KoLLaVA-Instruct-581k](https://huggingface.co/datasets/tabtoyou/KoLLaVA-v1.5-Instruct-581k)
 
 - COCO: [train2017](http://images.cocodataset.org/zips/train2017.zip)
 - GQA: [images](https://downloads.cs.stanford.edu/nlp/data/gqa/images.zip)
